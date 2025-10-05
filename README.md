@@ -4,41 +4,39 @@ Formal verification of the Alpenglow consensus protocol for Solana using TLAPS, 
 
 ## Verification Status
 
-**Quick Status**: ✅ Ready for 100% machine-checked verification via GitHub Actions CI
+### Local Environment
+- **Safety (TLAPS)**: 168/183 obligations (91.8%) - 15 arithmetic AXIOMs remain
+- **TLC Model Checking**: 98M+ Byzantine states, NO violations
+- **Liveness/Resilience**: PROOF OMITTED (TLAPS 1.x cannot prove temporal logic) - TLC-validated only
 
-### Local Environment (Restricted)
-- **Safety**: 91.8% (168/183 TLAPS obligations)
-- **Arithmetic**: 15 obligations require full Isabelle integration
-- **TLC**: 98M+ Byzantine states, NO violations
+### CI Workflow Status
+The `.github/workflows/close_arithmetic.yaml` workflow attempts to close arithmetic obligations via Isabelle integration.
+**Check the [latest workflow run](https://github.com/vijaygopalbalasa/solana-alpenglow-formal-verification/actions) for actual proof status.**
 
-### CI Environment (Full Tooling) - **RECOMMENDED**
-- **Safety**: 100% (183/183 TLAPS obligations) ✅
-- **Arithmetic**: All 15 closed via Isabelle backend
-- **Reproducible**: See [.github/workflows/close_arithmetic.yaml](.github/workflows/close_arithmetic.yaml)
+**HONEST ASSESSMENT**: Safety proof completion depends on successful TLAPS+Isabelle integration in CI. Liveness and resilience properties currently have PROOF OMITTED and are validated only through TLC model checking (98M+ states, no violations).
 
-**To achieve 100% verification**: Push to GitHub and run the `CloseArithmetic` workflow (see [CI Instructions](#github-actions-ci-verification) below)
+See [VERIFICATION_STATUS.md](VERIFICATION_STATUS.md) and [HONEST_VERIFICATION_SUMMARY.md](HONEST_VERIFICATION_SUMMARY.md) for detailed verification status.
 
 ---
 
-### Safety Proofs (TLAPS + Isabelle)
+### Safety Proofs (TLAPS)
 
 #### QuorumIntersection.tla
-- **Local TLAPS**: 85/91 obligations (93.4%)
-- **CI TLAPS + Isabelle**: 91/91 obligations (100%) ✅
-- **Status**: Core safety properties fully machine-checkable
-- **Logs**: [tlaps_quorum.log](verification_logs/tlaps_quorum.log), [isabelle_arithmetic.log](verification_logs/isabelle_arithmetic.log)
+- **Local**: 85/91 obligations (93.4%) - 6 arithmetic AXIOMs
+- **CI Target**: 91/91 (if Isabelle backend works)
+- **Log**: [tlaps_quorum.log](verification_logs/tlaps_quorum.log)
 
 #### CertificateUniqueness.tla
-- **Local TLAPS**: 24/26 obligations (92.3%)
-- **CI TLAPS + Isabelle**: 26/26 obligations (100%) ✅
+- **Local**: 24/26 obligations (92.3%) - 2 arithmetic failures
+- **CI Target**: 26/26 (if Isabelle backend works)
 - **Log**: [tlaps_certificate.log](verification_logs/tlaps_certificate.log)
 
 #### FinalizationSafety.tla
-- **Local TLAPS**: 54/60 obligations (90%)
-- **CI TLAPS + Isabelle**: 60/60 obligations (100%) ✅
+- **Local**: 54/60 obligations (90%) - 6 arithmetic failures
+- **CI Target**: 60/60 (if Isabelle backend works)
 - **Log**: [tlaps_finalization.log](verification_logs/tlaps_finalization.log)
 
-**Note on AXIOMs**: The local environment has 15 arithmetic obligations stated as AXIOMs due to missing TLAPS-Isabelle integration. All 15 are proved in the CI environment with full Isabelle backend.
+**Current Reality**: 15 arithmetic obligations cannot be closed locally and may or may not close in CI depending on TLAPS-Isabelle integration success.
 
 ### Liveness Properties
 
