@@ -1,0 +1,2 @@
+session ArithmeticIsa = HOL +
+  theories ArithmeticIsa

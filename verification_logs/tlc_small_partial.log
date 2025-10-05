@@ -1,0 +1,32 @@
+TLC2 Version 2.20 of Day Month 20?? (rev: 4c54d98)
+Running breadth-first search Model-Checking with fp 82 and seed -6600291547805260125 with 4 workers on 8 cores with 1820MB heap and 64MB offheap memory [pid: 96457] (Mac OS X 15.3.1 aarch64, Oracle Corporation 25 x86_64, MSBDiskFPSet, DiskStateQueue).
+
+Configuration: configs/Alpenglow_small.cfg
+- StakeProfileId: equal4  
+- MaxSlot: 1
+- WindowSize: 2
+- TimeoutLimit: 3
+- K: 4
+
+Invariants Checked:
+- SafetyInvariant
+- NoConflictingFinalization
+- CertificateStakeValid
+- ByzantineStakeBound
+
+Starting... (2025-10-05 20:51:57)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-05 20:51:57.
+
+Progress(16) at 2025-10-05 20:52:00: 741,647 states generated (741,647 s/min), 144,098 distinct states found (144,098 ds/min), 42,604 states left on queue.
+Progress(43) at 2025-10-05 20:53:00: 13,064,222 states generated (12,322,575 s/min), 1,904,272 distinct states found (1,760,174 ds/min), 67,134 states left on queue.
+Progress(72) at 2025-10-05 20:54:00: 26,703,438 states generated (13,639,216 s/min), 3,830,014 distinct states found (1,925,742 ds/min), 67,295 states left on queue.
+Progress(105) at 2025-10-05 20:55:00: 42,665,962 states generated (15,962,524 s/min), 6,084,726 distinct states found (2,254,712 ds/min), 67,101 states left on queue.
+
+Result: INTERRUPTED after ~3 minutes
+- 42,665,962 states generated
+- 6,084,726 distinct states explored
+- NO INVARIANT VIOLATIONS FOUND
+- State space not fully explored (67,101 states still on queue)
+
+NOTE: TLC found no violations in over 6 million states. Full model checking would require longer runtime.

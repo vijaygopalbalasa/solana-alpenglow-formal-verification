@@ -1,0 +1,5 @@
+
+\* TLAPM version 386cb32
+\* launched at 2025-10-05 20:32:11 with command line:
+\* tools/tlapm/bin/tlapm --toolbox 0 0 proofs/QuorumIntersection.tla
+

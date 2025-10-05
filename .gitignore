@@ -1,0 +1,64 @@
+# TLA+ Toolbox files
+*.toolbox/
+*.fdb
+*.fls
+*.out
+*.aux
+*.log
+*.pdf
+*.dvi
+*.ps
+
+# TLC model checking outputs
+states/
+# .tlacache/ - KEEP for CI proof artifacts
+*.st
+MC.out
+MC.cfg
+*.dot
+*_TTrace_*.tla
+
+# TLAPS proof outputs
+.tlaps/
+*.obl
+*.sum
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Rust simulation artifacts
+target/
+Cargo.lock
+
+# Python simulation artifacts
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+
+# Log files and outputs
+logs/
+# *.log - KEEP verification logs
+results/
+*.csv
+*.json
+
+# But ignore these specific logs
+*.fdb
+*.fls
+*.aux
+
+# Temporary files
+tmp/
+temp/_apalache-out/

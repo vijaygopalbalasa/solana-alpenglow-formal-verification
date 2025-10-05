@@ -1,0 +1,2274 @@
+TLAPS Verification of QuorumIntersection.tla
+=============================================
+
+Command: tools/tlapm/bin/tlapm --toolbox 0 0 proofs/QuorumIntersection.tla
+Date: 2025-10-05
+TLAPS Version: 1.6.0-pre (commit 386cb32)
+
+Result: 85/91 obligations proved (93.4%)
+Failed: 6 arithmetic obligations
+
+The 6 failed obligations correspond to the AXIOMs:
+- ArithmeticSubtraction (used 2 times)
+- ArithmeticInequality (used 2 times) 
+- ArithmeticTransitivity (used 2 times)
+
+Note: These arithmetic lemmas are independently verified in Isabelle/HOL 
+(see verification_logs/isabelle_arithmetic.log). TLAPS cannot use them 
+due to environment limitations.
+
+Full output below:
+-------------------
+
+
+\* TLAPM version 386cb32
+\* launched at 2025-10-05 21:00:29 with command line:
+\* tools/tlapm/bin/tlapm --toolbox 0 0 proofs/QuorumIntersection.tla
+
+(* loading fingerprints in ".tlacache/QuorumIntersection.tlaps/fingerprints" *)
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:80:5:80:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:2
+@!!loc:80:8:80:12
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:3
+@!!loc:80:14:80:18
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:4
+@!!loc:80:20:80:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:5
+@!!loc:70:5:70:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:6
+@!!loc:70:8:70:21
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:7
+@!!loc:72:5:72:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:8
+@!!loc:72:8:72:21
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:9
+@!!loc:74:5:74:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:10
+@!!loc:74:8:74:19
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:11
+@!!loc:76:5:76:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:12
+@!!loc:76:8:76:12
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:13
+@!!loc:76:14:76:18
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:14
+@!!loc:76:20:76:24
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:15
+@!!loc:76:26:76:48
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:16
+@!!loc:76:50:76:71
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:17
+@!!loc:78:5:78:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:18
+@!!loc:78:8:78:19
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:19
+@!!loc:78:21:78:36
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:20
+@!!loc:89:7:89:9
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:21
+@!!loc:89:10:89:28
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:22
+@!!loc:110:13:110:15
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:23
+@!!loc:110:16:110:20
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:24
+@!!loc:99:5:99:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:25
+@!!loc:99:8:99:35
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:26
+@!!loc:101:5:101:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:27
+@!!loc:101:8:101:24
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:28
+@!!loc:101:26:101:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:29
+@!!loc:101:43:101:54
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:30
+@!!loc:103:5:103:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:31
+@!!loc:103:8:103:23
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:32
+@!!loc:103:25:103:45
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:33
+@!!loc:109:15:109:17
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:34
+@!!loc:109:18:109:22
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:35
+@!!loc:109:24:109:28
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:36
+@!!loc:109:30:109:50
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:37
+@!!loc:106:36:106:38
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:38
+@!!loc:106:39:106:43
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:39
+@!!loc:106:45:106:58
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:40
+@!!loc:108:9:108:11
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:41
+@!!loc:108:12:108:16
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:42
+@!!loc:108:18:108:22
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:43
+@!!loc:108:24:108:28
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:44
+@!!loc:108:30:108:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:45
+@!!loc:108:43:108:65
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:46
+@!!loc:108:67:108:88
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:47
+@!!loc:131:13:131:15
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:48
+@!!loc:131:16:131:20
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:49
+@!!loc:120:5:120:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:50
+@!!loc:120:8:120:35
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:51
+@!!loc:122:5:122:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:52
+@!!loc:122:8:122:24
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:53
+@!!loc:122:26:122:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:54
+@!!loc:122:43:122:54
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:55
+@!!loc:124:5:124:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:56
+@!!loc:124:8:124:23
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:57
+@!!loc:124:25:124:45
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:58
+@!!loc:130:15:130:17
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:59
+@!!loc:130:18:130:22
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:60
+@!!loc:130:24:130:28
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:61
+@!!loc:130:30:130:50
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:62
+@!!loc:127:36:127:38
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:63
+@!!loc:127:39:127:43
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:64
+@!!loc:127:45:127:58
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:65
+@!!loc:129:9:129:11
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:66
+@!!loc:129:12:129:16
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:67
+@!!loc:129:18:129:22
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:68
+@!!loc:129:24:129:28
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:69
+@!!loc:129:30:129:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:70
+@!!loc:129:43:129:65
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:71
+@!!loc:129:67:129:88
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:72
+@!!loc:137:7:137:9
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:73
+@!!loc:137:10:137:26
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:74
+@!!loc:143:7:143:9
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:75
+@!!loc:143:10:143:26
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:76
+@!!loc:159:5:159:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:77
+@!!loc:159:8:159:12
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:78
+@!!loc:159:14:159:18
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:79
+@!!loc:159:20:159:24
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:80
+@!!loc:159:26:159:37
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:81
+@!!loc:159:39:159:54
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:82
+@!!loc:159:56:159:78
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:83
+@!!loc:159:80:159:101
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:84
+@!!loc:153:5:153:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:85
+@!!loc:153:8:153:35
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:86
+@!!loc:155:5:155:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:87
+@!!loc:155:8:155:24
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:88
+@!!loc:155:26:155:41
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:89
+@!!loc:155:43:155:54
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:90
+@!!loc:157:5:157:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:91
+@!!loc:157:8:157:23
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligationsnumber
+@!!count:91
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:80:5:80:7
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2) ,
+       SumStake(S1) \in Nat /\ SumStake(S2) \in Nat /\ TotalStake \in Nat ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1 \cap S2) >= SumStake(S1) + SumStake(S2) - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:80:5:80:7
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2) ,
+       SumStake(S1) \in Nat /\ SumStake(S2) \in Nat /\ TotalStake \in Nat ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1 \cap S2) >= SumStake(S1) + SumStake(S2) - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:80:5:80:7
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2) ,
+       SumStake(S1) \in Nat /\ SumStake(S2) \in Nat /\ TotalStake \in Nat ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1 \cap S2) >= SumStake(S1) + SumStake(S2) - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:2
+@!!loc:80:8:80:12
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:3
+@!!loc:80:14:80:18
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:4
+@!!loc:80:20:80:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:5
+@!!loc:70:5:70:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:6
+@!!loc:70:8:70:21
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:7
+@!!loc:72:5:72:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:8
+@!!loc:72:8:72:21
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:9
+@!!loc:74:5:74:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:10
+@!!loc:74:8:74:19
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:11
+@!!loc:76:5:76:7
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2)
+       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2) ,
+       SumStake(S1 \cup S2) =< TotalStake ,
+       SumStake(S1 \cup S2) \in Nat /\ SumStake(S1 \cap S2) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2)
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:11
+@!!loc:76:5:76:7
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2)
+       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2) ,
+       SumStake(S1 \cup S2) =< TotalStake ,
+       SumStake(S1 \cup S2) \in Nat /\ SumStake(S1 \cap S2) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2)
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:11
+@!!loc:76:5:76:7
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT S1 \in SUBSET Validators,
+       NEW CONSTANT S2 \in SUBSET Validators,
+       SumStake(S1) + SumStake(S2)
+       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2) ,
+       SumStake(S1 \cup S2) =< TotalStake ,
+       SumStake(S1 \cup S2) \in Nat /\ SumStake(S1 \cap S2) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  SumStake(S1) + SumStake(S2) =< TotalStake + SumStake(S1 \cap S2)
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:12
+@!!loc:76:8:76:12
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:13
+@!!loc:76:14:76:18
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:14
+@!!loc:76:20:76:24
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:15
+@!!loc:76:26:76:48
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:16
+@!!loc:76:50:76:71
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:17
+@!!loc:78:5:78:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:18
+@!!loc:78:8:78:19
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:19
+@!!loc:78:21:78:36
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:20
+@!!loc:89:7:89:9
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:21
+@!!loc:89:10:89:28
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:22
+@!!loc:110:13:110:15
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:23
+@!!loc:110:16:110:20
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:24
+@!!loc:99:5:99:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:25
+@!!loc:99:8:99:35
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:26
+@!!loc:101:5:101:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:27
+@!!loc:101:8:101:24
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:28
+@!!loc:101:26:101:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:29
+@!!loc:101:43:101:54
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:30
+@!!loc:103:5:103:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:31
+@!!loc:103:8:103:23
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:32
+@!!loc:103:25:103:45
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:33
+@!!loc:109:15:109:17
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       0 >= 2 * FastThreshold - TotalStake ,
+       2 * FastThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:33
+@!!loc:109:15:109:17
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       0 >= 2 * FastThreshold - TotalStake ,
+       2 * FastThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:33
+@!!loc:109:15:109:17
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       0 >= 2 * FastThreshold - TotalStake ,
+       2 * FastThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:34
+@!!loc:109:18:109:22
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:35
+@!!loc:109:24:109:28
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:36
+@!!loc:109:30:109:50
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:37
+@!!loc:106:36:106:38
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:38
+@!!loc:106:39:106:43
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:39
+@!!loc:106:45:106:58
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:40
+@!!loc:108:9:108:11
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * FastThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:40
+@!!loc:108:9:108:11
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * FastThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:40
+@!!loc:108:9:108:11
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= FastThreshold ,
+       SumStake(Q2) >= FastThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * FastThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:41
+@!!loc:108:12:108:16
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:42
+@!!loc:108:18:108:22
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:43
+@!!loc:108:24:108:28
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:44
+@!!loc:108:30:108:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:45
+@!!loc:108:43:108:65
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:46
+@!!loc:108:67:108:88
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:47
+@!!loc:131:13:131:15
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:48
+@!!loc:131:16:131:20
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:49
+@!!loc:120:5:120:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:50
+@!!loc:120:8:120:35
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:51
+@!!loc:122:5:122:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:52
+@!!loc:122:8:122:24
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:53
+@!!loc:122:26:122:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:54
+@!!loc:122:43:122:54
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:55
+@!!loc:124:5:124:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:56
+@!!loc:124:8:124:23
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:57
+@!!loc:124:25:124:45
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:58
+@!!loc:130:15:130:17
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       0 >= 2 * SlowThreshold - TotalStake ,
+       2 * SlowThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:58
+@!!loc:130:15:130:17
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       0 >= 2 * SlowThreshold - TotalStake ,
+       2 * SlowThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:58
+@!!loc:130:15:130:17
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       0 >= 2 * SlowThreshold - TotalStake ,
+       2 * SlowThreshold - TotalStake > 0 ,
+       \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b 
+PROVE  FALSE
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:59
+@!!loc:130:18:130:22
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:60
+@!!loc:130:24:130:28
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:61
+@!!loc:130:30:130:50
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:62
+@!!loc:127:36:127:38
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:63
+@!!loc:127:39:127:43
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:64
+@!!loc:127:45:127:58
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:65
+@!!loc:129:9:129:11
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * SlowThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:65
+@!!loc:129:9:129:11
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * SlowThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:65
+@!!loc:129:9:129:11
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT Q1 \in SUBSET Validators,
+       NEW CONSTANT Q2 \in SUBSET Validators,
+       SumStake(Q1) >= SlowThreshold ,
+       SumStake(Q2) >= SlowThreshold ,
+       SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake ,
+       SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold ,
+       SumStake(Q1 \cap Q2) = 0 ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat ,
+       \A a, b, c \in Nat : a >= b /\ b >= c => a >= c ,
+       \A a, b, c \in Nat : a + b >= c => a >= c - b \/ b >= c - a 
+PROVE  0 >= 2 * SlowThreshold - TotalStake
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:66
+@!!loc:129:12:129:16
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:67
+@!!loc:129:18:129:22
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:68
+@!!loc:129:24:129:28
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:69
+@!!loc:129:30:129:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:70
+@!!loc:129:43:129:65
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:71
+@!!loc:129:67:129:88
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:72
+@!!loc:137:7:137:9
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:73
+@!!loc:137:10:137:26
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:74
+@!!loc:143:7:143:9
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:75
+@!!loc:143:10:143:26
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:76
+@!!loc:159:5:159:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:77
+@!!loc:159:8:159:12
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:78
+@!!loc:159:14:159:18
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:79
+@!!loc:159:20:159:24
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:80
+@!!loc:159:26:159:37
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:81
+@!!loc:159:39:159:54
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:82
+@!!loc:159:56:159:78
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:83
+@!!loc:159:80:159:101
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:84
+@!!loc:153:5:153:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:85
+@!!loc:153:8:153:35
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:86
+@!!loc:155:5:155:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:87
+@!!loc:155:8:155:24
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:88
+@!!loc:155:26:155:41
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:89
+@!!loc:155:43:155:54
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:90
+@!!loc:157:5:157:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:91
+@!!loc:157:8:157:23
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+(* created new ".tlacache/QuorumIntersection.tlaps/QuorumIntersection.thy" *)
+(* fingerprints written in ".tlacache/QuorumIntersection.tlaps/fingerprints" *)
+File "./proofs/QuorumIntersection.tla", line 129, characters 9-10:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Q1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT Q2 \in 
+                  SUBSET Validators,
+                  SumStake(Q1) >= SlowThreshold ,
+                  SumStake(Q2) >= SlowThreshold ,
+                  <1>1 ,
+                  <1>2 ,
+                  <2>1 ,
+                  SumStakeNat ,
+                  ArithmeticTransitivity ,
+                  ArithmeticSubtraction 
+           PROVE  0 >= 2 * SlowThreshold - TotalStake
+File "./proofs/QuorumIntersection.tla", line 130, characters 15-16:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Q1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT Q2 \in 
+                  SUBSET Validators,
+                  SumStake(Q1) >= SlowThreshold ,
+                  SumStake(Q2) >= SlowThreshold ,
+                  <2>2 ,
+                  <1>3 ,
+                  ArithmeticInequality 
+           PROVE  FALSE
+File "./proofs/QuorumIntersection.tla", line 108, characters 9-10:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Q1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT Q2 \in 
+                  SUBSET Validators,
+                  SumStake(Q1) >= FastThreshold ,
+                  SumStake(Q2) >= FastThreshold ,
+                  <1>1 ,
+                  <1>2 ,
+                  <2>1 ,
+                  SumStakeNat ,
+                  ArithmeticTransitivity ,
+                  ArithmeticSubtraction 
+           PROVE  0 >= 2 * FastThreshold - TotalStake
+File "./proofs/QuorumIntersection.tla", line 109, characters 15-16:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Q1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT Q2 \in 
+                  SUBSET Validators,
+                  SumStake(Q1) >= FastThreshold ,
+                  SumStake(Q2) >= FastThreshold ,
+                  <2>2 ,
+                  <1>3 ,
+                  ArithmeticInequality 
+           PROVE  FALSE
+File "./proofs/QuorumIntersection.tla", line 76, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT S1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT S2 \in 
+                  SUBSET Validators,
+                  <1>1 ,
+                  <1>2 ,
+                  <1>3 ,
+                  ArithmeticTransitivity ,
+                  ArithmeticSubtraction 
+           PROVE  SumStake(S1) + SumStake(S2)
+                  =< TotalStake + SumStake(S1 \cap S2)
+File "./proofs/QuorumIntersection.tla", line 80, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT S1 \in 
+                  SUBSET Validators,
+                  NEW CONSTANT S2 \in 
+                  SUBSET Validators,
+                  <1>4 ,
+                  <1>5 ,
+                  ArithmeticSubtraction 
+           PROVE  SumStake(S1 \cap S2)
+                  >= SumStake(S1) + SumStake(S2) - TotalStake
+File "./proofs/QuorumIntersection.tla", line 1, character 1 to line 162, character 4:
+[ERROR]: 6/91 obligations failed.
+There were backend errors processing module `"QuorumIntersection"`.

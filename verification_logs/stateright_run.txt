@@ -1,0 +1,4 @@
+Alpenglow Stateright Model
+Validators: 4
+Slots: 2
+States explored: 17701905 (unique: 3214800), max depth: 278

@@ -1,0 +1,8 @@
+
+\* TLAPM version 386cb32
+\* launched at 2025-10-05 18:49:59 with command line:
+\* tools/tlapm/bin/tlapm --toolbox 0 0 proofs/QuorumIntersection.tla
+
+(* loading fingerprints in ".tlacache/QuorumIntersection.tlaps/fingerprints" *)
+(* created new ".tlacache/QuorumIntersection.tlaps/QuorumIntersection.thy" *)
+(* fingerprints written in ".tlacache/QuorumIntersection.tlaps/fingerprints" *)

@@ -1,0 +1,50 @@
+name: Alpenglow Formal Verification
+
+on: [push, pull_request]
+
+jobs:
+  stateright-tests:
+    name: Stateright Model Checking
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions-rust-lang/setup-rust-toolchain@v1
+      - name: Run Stateright tests
+        working-directory: stateright_harness
+        run: cargo test --release
+      - name: Build Stateright harness
+        working-directory: stateright_harness
+        run: cargo build --release
+
+  tlaps-proofs:
+    name: TLAPS Proof Verification
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install TLAPS
+        run: |
+          wget https://github.com/tlaplus/tlapm/releases/download/v1.5.0/tlaps-1.5.0-x86_64-linux-gnu-inst.bin
+          chmod +x tlaps-1.5.0-x86_64-linux-gnu-inst.bin
+          ./tlaps-1.5.0-x86_64-linux-gnu-inst.bin -d tools/tlapm
+      - name: Verify quorum intersection proof
+        run: |
+          export TLA_PATH="proofs"
+          tools/tlapm/bin/tlapm proofs/QuorumIntersection.tla
+      - name: Verify certificate uniqueness proof
+        run: |
+          export TLA_PATH="proofs"
+          tools/tlapm/bin/tlapm proofs/CertificateUniqueness.tla
+
+  spec-syntax:
+    name: TLA+ Specification Syntax Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Download TLA+ Tools
+        run: |
+          mkdir -p tools
+          wget https://github.com/tlaplus/tlaplus/releases/download/v1.8.0/tla2tools.jar -O tools/tla2tools.jar
+      - name: Parse Alpenglow core definitions
+        run: java -cp tools/tla2tools.jar -DTLA-Library=tla tla2sany.SANY tla/AlpenglowCore.tla
+      - name: Parse Alpenglow protocol spec
+        run: java -cp tools/tla2tools.jar -DTLA-Library=tla tla2sany.SANY tla/AlpenglowProtocol.tla

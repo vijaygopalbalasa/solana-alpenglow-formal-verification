@@ -1,0 +1,166 @@
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+(* created new ".tlacache/CertificateUniqueness.tlaps/CertificateUniqueness.thy" *)
+(* fingerprints written in ".tlacache/CertificateUniqueness.tlaps/fingerprints" *)
+File "./proofs/CertificateUniqueness.tla", line 40, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT Signers
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  SignersWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       Signers(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => Signers(slot, b1) \cap Signers(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(Signers(slot, block1)) >= FastThreshold ,
+                  SumStake(Signers(slot, block2)) >= FastThreshold ,
+                  <1>2 ,
+                  <1>4 ,
+                  SumStakeNat 
+           PROVE  SumStake(ByzantineSet) >= 2 * FastThreshold - TotalStake
+File "./proofs/CertificateUniqueness.tla", line 46, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT Signers
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  SignersWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       Signers(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => Signers(slot, b1) \cap Signers(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(Signers(slot, block1)) >= FastThreshold ,
+                  SumStake(Signers(slot, block2)) >= FastThreshold ,
+                  <1>5 ,
+                  <1>6 ,
+                  <1>7 ,
+                  SumStakeNat ,
+                  ThresholdBounds ,
+                  ByzantineThresholdBound 
+           PROVE  FALSE
+File "./proofs/CertificateUniqueness.tla", line 1, character 1 to line 49, character 4:
+[ERROR]: 2/26 obligations failed.
+There were backend errors processing module `"CertificateUniqueness"`.
+ tlapm ending abnormally with Failure("backend errors: there are unproved obligations")
+Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+Called from Tlapm_lib.process_module in file "src/tlapm_lib.ml", line 447, characters 12-77
+Called from Tlapm_lib.main.f in file "src/tlapm_lib.ml", line 576, characters 23-43
+Called from Stdlib__List.fold_left in file "list.ml", line 123, characters 24-34
+Called from Tlapm_lib.main in file "src/tlapm_lib.ml", line 579, characters 13-40
+Called from Tlapm_lib.init in file "src/tlapm_lib.ml", line 591, characters 8-33
+

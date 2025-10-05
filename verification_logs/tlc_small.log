@@ -1,0 +1,28 @@
+TLC2 Version 2.20 of Day Month 20?? (rev: 4c54d98)
+Running breadth-first search Model-Checking with fp 78 and seed -783704412527271281 with 2 workers on 8 cores with 1820MB heap and 64MB offheap memory [pid: 96318] (Mac OS X 15.3.1 aarch64, Oracle Corporation 25 x86_64, MSBDiskFPSet, DiskStateQueue).
+Parsing file /Users/vijaygopalb/solana-alpenglow-formal-verification/tla/AlpenglowProtocol.tla
+Parsing file /Users/vijaygopalb/solana-alpenglow-formal-verification/tla/AlpenglowCore.tla
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/TLC.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/TLC.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/_TLCTrace.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/_TLCTrace.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/Naturals.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/Naturals.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/FiniteSets.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/FiniteSets.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/Sequences.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/Sequences.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/TLCExt.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/TLCExt.tla)
+Parsing file /private/var/folders/y4/b4mz2x5902bd9s112b86b_br0000gn/T/tlc-11388590172301283102/Integers.tla (jar:file:/Users/vijaygopalb/solana-alpenglow-formal-verification/tools/tla2tools.jar!/tla2sany/StandardModules/Integers.tla)
+Semantic processing of module Naturals
+Semantic processing of module Sequences
+Semantic processing of module FiniteSets
+Semantic processing of module AlpenglowCore
+Semantic processing of module TLC
+Semantic processing of module Integers
+Semantic processing of module TLCExt
+Semantic processing of module _TLCTrace
+Semantic processing of module AlpenglowProtocol
+Linting of module AlpenglowCore
+Linting of module TLCExt
+Linting of module _TLCTrace
+Linting of module AlpenglowProtocol
+Starting... (2025-10-05 20:51:29)
+Computing initial states...
+Finished computing initial states: 1 distinct state generated at 2025-10-05 20:51:30.
+Progress(10) at 2025-10-05 20:51:33: 50,553 states generated (50,553 s/min), 12,749 distinct states found (12,749 ds/min), 5,631 states left on queue.

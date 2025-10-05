@@ -1,0 +1,536 @@
+(* loading fingerprints in ".tlacache/FinalizationSafety.tlaps/fingerprints" *)
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+Zenon error: exhausted search space without finding a proof
+(* created new ".tlacache/FinalizationSafety.tlaps/FinalizationSafety.thy" *)
+(* fingerprints written in ".tlacache/FinalizationSafety.tlaps/fingerprints" *)
+File "./proofs/FinalizationSafety.tla", line 90, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FinalCertSigners(slot, block1)) >= SlowThreshold ,
+                  SumStake(FinalCertSigners(slot, block2)) >= SlowThreshold ,
+                  ThresholdBounds 
+           PROVE  2 * SlowThreshold - TotalStake > ByzantineThreshold
+File "./proofs/FinalizationSafety.tla", line 88, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FinalCertSigners(slot, block1)) >= SlowThreshold ,
+                  SumStake(FinalCertSigners(slot, block2)) >= SlowThreshold ,
+                  <1>4 ,
+                  ByzantineSubset ,
+                  ByzantineStakeLimit ,
+                  SumStakeMonotone 
+           PROVE  SumStake(FinalCertSigners(slot, block1)
+                           \cap FinalCertSigners(slot, block2))
+                  =< ByzantineThreshold
+File "./proofs/FinalizationSafety.tla", line 92, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FinalCertSigners(slot, block1)) >= SlowThreshold ,
+                  SumStake(FinalCertSigners(slot, block2)) >= SlowThreshold ,
+                  <1>5 ,
+                  <1>6 ,
+                  <1>7 ,
+                  SumStakeNat 
+           PROVE  FALSE
+File "./proofs/FinalizationSafety.tla", line 48, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FastCertSigners(slot, block1)) >= FastThreshold ,
+                  SumStake(FastCertSigners(slot, block2)) >= FastThreshold ,
+                  <1>3 ,
+                  <1>4 ,
+                  ByzantineSubset ,
+                  ByzantineStakeLimit ,
+                  SumStakeMonotone 
+           PROVE  SumStake(FastCertSigners(slot, block1)
+                           \cap FastCertSigners(slot, block2))
+                  =< ByzantineThreshold
+File "./proofs/FinalizationSafety.tla", line 46, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FastCertSigners(slot, block1)) >= FastThreshold ,
+                  SumStake(FastCertSigners(slot, block2)) >= FastThreshold ,
+                  HonestSingleVote 
+           PROVE  FastCertSigners(slot, block1)
+                  \cap FastCertSigners(slot, block2) \subseteq ByzantineSet
+File "./proofs/FinalizationSafety.tla", line 52, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  NEW CONSTANT SumStake
+                  (_),
+                  SumStakeEmpty == SumStake({}) = 0,
+                  SumStakeDisjoint ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \cap S2 = {}
+                       => SumStake(S1 \cup S2) = SumStake(S1) + SumStake(S2),
+                  SumStakeMonotone ==
+                    \A S1, S2 \in SUBSET Validators :
+                       S1 \subseteq S2 => SumStake(S1) =< SumStake(S2),
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  SumStakeBound ==
+                    \A S \in SUBSET Validators : SumStake(S) =< TotalStake,
+                  SumStakeUnion ==
+                    \A S1, S2 \in SUBSET Validators :
+                       SumStake(S1) + SumStake(S2)
+                       = SumStake(S1 \cup S2) + SumStake(S1 \cap S2),
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  ThresholdBounds ==
+                    /\ TotalStake \in Nat
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  ArithmeticSubtraction ==
+                    \A a, b, c \in Nat :
+                       a + b >= c => a >= c - b \/ b >= c - a,
+                  ArithmeticDoubling ==
+                    \A a, c \in Nat : a >= c /\ a >= c => a + a >= 2 * c,
+                  ArithmeticInequality ==
+                    \A a, b, c \in Nat : a >= b + c /\ c > 0 => a > b,
+                  ArithmeticTransitivity ==
+                    \A a, b, c \in Nat : a >= b /\ b >= c => a >= c,
+                  NEW CONSTANT Slots,
+                  NEW CONSTANT FastCertSigners
+                  (_, _),
+                  NEW CONSTANT SlowCertSigners
+                  (_, _),
+                  NEW CONSTANT FinalCertSigners
+                  (_, _),
+                  NEW CONSTANT ByzantineSet,
+                  NEW CONSTANT ByzantineThreshold,
+                  FastCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FastCertSigners(slot, block) \subseteq Validators,
+                  SlowCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       SlowCertSigners(slot, block) \subseteq Validators,
+                  FinalCertWithinValidators ==
+                    \A slot \in Slots, block \in Nat :
+                       FinalCertSigners(slot, block) \subseteq Validators,
+                  HonestSingleVote ==
+                    \A slot \in Slots, b1, b2 \in Nat :
+                       b1 # b2
+                       => FinalCertSigners(slot, b1)
+                          \cap FinalCertSigners(slot, b2)
+                          \subseteq ByzantineSet,
+                  ByzantineSubset == ByzantineSet \subseteq Validators,
+                  ByzantineStakeLimit ==
+                    SumStake(ByzantineSet) =< ByzantineThreshold,
+                  ByzantineThresholdBound ==
+                    ByzantineThreshold = (TotalStake * 2) \div 10,
+                  FastMargin ==
+                    2 * FastThreshold - TotalStake > ByzantineThreshold,
+                  NEW CONSTANT slot \in Slots,
+                  NEW CONSTANT block1 \in Nat,
+                  NEW CONSTANT block2 \in Nat,
+                  block1 # block2 ,
+                  SumStake(FastCertSigners(slot, block1)) >= FastThreshold ,
+                  SumStake(FastCertSigners(slot, block2)) >= FastThreshold ,
+                  <1>3 ,
+                  <1>5 ,
+                  <1>6 ,
+                  SumStakeNat 
+           PROVE  FALSE
+File "./proofs/FinalizationSafety.tla", line 1, character 1 to line 95, character 4:
+[ERROR]: 6/60 obligations failed.
+There were backend errors processing module `"FinalizationSafety"`.
+ tlapm ending abnormally with Failure("backend errors: there are unproved obligations")
+Raised at Stdlib.failwith in file "stdlib.ml", line 29, characters 17-33
+Called from Tlapm_lib.process_module in file "src/tlapm_lib.ml", line 447, characters 12-77
+Called from Tlapm_lib.main.f in file "src/tlapm_lib.ml", line 576, characters 23-43
+Called from Stdlib__List.fold_left in file "list.ml", line 123, characters 24-34
+Called from Tlapm_lib.main in file "src/tlapm_lib.ml", line 579, characters 13-40
+Called from Tlapm_lib.init in file "src/tlapm_lib.ml", line 591, characters 8-33
+

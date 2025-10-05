@@ -1,0 +1,220 @@
+
+\* TLAPM version 386cb32
+\* launched at 2025-10-05 21:02:08 with command line:
+\* tools/tlapm/bin/tlapm --toolbox 0 0 proofs/Liveness.tla
+
+(* loading fingerprints in ".tlacache/Liveness.tlaps/fingerprints" *)
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:55:5:55:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:2
+@!!loc:55:8:55:23
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:3
+@!!loc:55:25:55:36
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:4
+@!!loc:108:5:108:7
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:5
+@!!loc:108:8:108:23
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:6
+@!!loc:108:25:108:37
+@!!status:to be proved
+@!!END
+
+@!!BEGIN
+@!!type:obligationsnumber
+@!!count:6
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:55:5:55:7
+@!!status:failed
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!reason:timeout
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT TimeoutLimit,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT HonestVals \in SUBSET Validators,
+       SumStake(HonestVals) >= SlowThreshold ,
+       /\ FastThreshold \in Nat
+       /\ SlowThreshold \in Nat
+       /\ FastThreshold = (TotalStake * 8) \div 10
+       /\ SlowThreshold = (TotalStake * 6) \div 10
+       /\ 2 * FastThreshold > TotalStake
+       /\ 2 * SlowThreshold > TotalStake ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat 
+PROVE  SumStake(HonestVals) > TotalStake \div 2
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:55:5:55:7
+@!!status:failed
+@!!prover:zenon
+@!!meth:time-limit: 10
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT TimeoutLimit,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT HonestVals \in SUBSET Validators,
+       SumStake(HonestVals) >= SlowThreshold ,
+       /\ FastThreshold \in Nat
+       /\ SlowThreshold \in Nat
+       /\ FastThreshold = (TotalStake * 8) \div 10
+       /\ SlowThreshold = (TotalStake * 6) \div 10
+       /\ 2 * FastThreshold > TotalStake
+       /\ 2 * SlowThreshold > TotalStake ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat 
+PROVE  SumStake(HonestVals) > TotalStake \div 2
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:1
+@!!loc:55:5:55:7
+@!!status:failed
+@!!prover:isabelle
+@!!meth:auto; time-limit: 30
+@!!reason:false
+@!!already:true
+@!!obl:ASSUME NEW CONSTANT Validators,
+       NEW CONSTANT Stake,
+       NEW CONSTANT TotalStake,
+       NEW CONSTANT FastThreshold,
+       NEW CONSTANT SlowThreshold,
+       NEW CONSTANT TimeoutLimit,
+       NEW CONSTANT SumStake(_),
+       NEW CONSTANT HonestVals \in SUBSET Validators,
+       SumStake(HonestVals) >= SlowThreshold ,
+       /\ FastThreshold \in Nat
+       /\ SlowThreshold \in Nat
+       /\ FastThreshold = (TotalStake * 8) \div 10
+       /\ SlowThreshold = (TotalStake * 6) \div 10
+       /\ 2 * FastThreshold > TotalStake
+       /\ 2 * SlowThreshold > TotalStake ,
+       \A S \in SUBSET Validators : SumStake(S) \in Nat 
+PROVE  SumStake(HonestVals) > TotalStake \div 2
+
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:2
+@!!loc:55:8:55:23
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:3
+@!!loc:55:25:55:36
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:4
+@!!loc:108:5:108:7
+@!!status:proved
+@!!prover:smt
+@!!meth:time-limit: 5
+@!!already:true
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:5
+@!!loc:108:8:108:23
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+@!!BEGIN
+@!!type:obligation
+@!!id:6
+@!!loc:108:25:108:37
+@!!status:trivial
+@!!prover:tlapm
+@!!already:false
+@!!END
+
+(* created new ".tlacache/Liveness.tlaps/Liveness.thy" *)
+(* fingerprints written in ".tlacache/Liveness.tlaps/fingerprints" *)
+File "./proofs/Liveness.tla", line 55, characters 5-6:
+[ERROR]: Could not prove or check:
+           ASSUME NEW CONSTANT Validators,
+                  NEW CONSTANT Stake,
+                  NEW CONSTANT TotalStake,
+                  NEW CONSTANT FastThreshold,
+                  NEW CONSTANT SlowThreshold,
+                  NEW CONSTANT TimeoutLimit,
+                  NEW CONSTANT SumStake
+                  (_),
+                  StakeFunction == Stake \in [Validators -> Nat],
+                  SumStakeNat ==
+                    \A S \in SUBSET Validators : SumStake(S) \in Nat,
+                  SumStakeTotal == SumStake(Validators) = TotalStake,
+                  ThresholdBounds ==
+                    /\ FastThreshold \in Nat
+                    /\ SlowThreshold \in Nat
+                    /\ FastThreshold = (TotalStake * 8) \div 10
+                    /\ SlowThreshold = (TotalStake * 6) \div 10
+                    /\ 2 * FastThreshold > TotalStake
+                    /\ 2 * SlowThreshold > TotalStake,
+                  TimeoutBound == TimeoutLimit \in Nat /\ TimeoutLimit > 0,
+                  PartialSynchrony == TRUE,
+                  NEW CONSTANT HonestVals \in 
+                  SUBSET Validators,
+                  SumStake(HonestVals) >= SlowThreshold ,
+                  ThresholdBounds ,
+                  SumStakeNat 
+           PROVE  SumStake(HonestVals) > TotalStake \div 2
+File "./proofs/Liveness.tla", line 1, character 1 to line 156, character 4:
+[ERROR]: 1/6 obligations failed.
+There were backend errors processing module `"Liveness"`.
