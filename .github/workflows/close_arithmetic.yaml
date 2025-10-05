@@ -20,7 +20,7 @@ jobs:
       - name: Install TLAPS build dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget unzip opam ocaml build-essential m4 libgmp-dev pkg-config
+          sudo apt-get install -y wget unzip opam build-essential m4 libgmp-dev pkg-config zlib1g-dev gawk time
 
       - name: Build TLAPS 1.6.0-pre from source
         run: |
@@ -32,20 +32,29 @@ jobs:
           # Checkout specific commit (1.6.0-pre)
           git checkout 386cb32
 
-          # Initialize opam
-          opam init --disable-sandboxing -y
-          eval $(opam env)
+          # Initialize opam with OCaml 5.1.0
+          opam init --disable-sandboxing -y -a
+          opam switch create 5.1.0 -y
+          eval $(opam env --switch=5.1.0)
 
-          # Install OCaml dependencies
-          opam install -y menhir zarith
+          # Install build system dependencies
+          opam install -y dune
+
+          # Install TLAPS dependencies
+          make opam-update
+          make opam-deps
+          make opam-deps-opt
 
           # Build TLAPS
-          ./configure --prefix=/usr/local
           make
-          sudo make install
+
+          # Install TLAPS to opam environment
+          make install
+
+          # Create global link
+          sudo ln -sf $(opam exec -- which tlapm) /usr/local/bin/tlapm
 
           # Verify installation
-          which tlapm
           tlapm --version
 
       - name: Install Isabelle 2025
