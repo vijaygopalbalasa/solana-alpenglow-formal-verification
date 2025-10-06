@@ -12,25 +12,37 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install TLAPS 1.5.0
+      - name: Install Isabelle 2025
         run: |
           cd /tmp
-          wget https://github.com/tlaplus/tlapm/releases/download/v1.5.0/tlaps-1.5.0-x86_64-linux-gnu-inst.bin
-          chmod +x tlaps-1.5.0-x86_64-linux-gnu-inst.bin
-          ./tlaps-1.5.0-x86_64-linux-gnu-inst.bin -d /usr/local/lib/tlaps
-          sudo ln -sf /usr/local/lib/tlaps/bin/tlapm /usr/local/bin/tlapm
-          tlapm --version || echo "TLAPS 1.5.0"
+          wget https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz
+          tar -xzf Isabelle2025_linux.tar.gz
+          sudo mv Isabelle2025 /opt/
+          sudo ln -sf /opt/Isabelle2025/bin/isabelle /usr/local/bin/isabelle
+          isabelle version
 
-      - name: Install Isabelle (Ubuntu package)
+      - name: Install TLAPS 1.6.0-pre dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y isabelle
-          isabelle version || echo "Isabelle from Ubuntu repos"
+          sudo apt-get install -y opam ocaml m4 pkg-config libgmp-dev zlib1g-dev
+
+      - name: Setup opam and install TLAPS 1.6.0-pre
+        run: |
+          opam init -y --disable-sandboxing
+          eval $(opam env)
+          cd /tmp
+          git clone --depth 1 https://github.com/tlaplus/tlapm.git
+          cd tlapm
+          opam update
+          opam install -y dune menhir zarith ppx_deriving batteries stdcompat
+          make
+          sudo make install PREFIX=/usr/local
+          tlapm --version
 
       - name: Build ArithmeticIsa Isabelle image
         run: |
           cd proofs
-          isabelle build -d . -b ArithmeticIsa 2>&1 || echo "Isabelle build attempted"
+          isabelle build -d . -b ArithmeticIsa
 
       - name: Configure TLAPS to use Isabelle backend
         run: |
