@@ -12,17 +12,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install TLAPS, Isabelle, CVC5 (no PPA)
+      - name: Download and install TLAPS 1.6.0-pre (with bundled Isabelle)
         run: |
-          sudo apt-get update
-          sudo apt-get install -y tlaplus-proof-system isabelle isabelle-2022-cvc5
+          cd /tmp
+          wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+          tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+          sudo mv tlapm /usr/local/
+          sudo ln -sf /usr/local/tlapm/bin/tlapm /usr/local/bin/tlapm
+          sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
           tlapm --version
           isabelle version
-
-      - name: Prepare Isabelle components
-        run: |
-          isabelle components -u
-          isabelle install_cvc5
 
       - name: Build ArithmeticIsa image
         run: |
