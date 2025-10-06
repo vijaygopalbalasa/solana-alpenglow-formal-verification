@@ -30,16 +30,13 @@ jobs:
       - name: Download and install Isabelle 2025
         run: |
           cd /tmp
-          # Try multiple mirrors
-          wget --no-check-certificate https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
-          curl -L -k -o Isabelle2025_linux.tar.gz https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
-          wget http://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz 2>/dev/null || \
-          curl -L -o Isabelle2025_linux.tar.gz http://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz
+          # Verified working mirror: Cambridge University (1033 MB)
+          wget https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz
 
           tar -xzf Isabelle2025_linux.tar.gz
           sudo mv Isabelle2025 /usr/local/tlapm/Isabelle
           sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
-          isabelle version
+          /usr/local/tlapm/Isabelle/bin/isabelle version
 
       - name: Build ArithmeticIsa image
         run: |
