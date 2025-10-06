@@ -1,0 +1,14 @@
+version: '3.8'
+
+services:
+  tlaps-verifier:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Mount the proofs directory to get .tlacache output
+      - ./proofs/.tlacache:/workspace/proofs/.tlacache
+      - ./verification_logs:/workspace/verification_logs
+    environment:
+      - ISABELLE_HOME=/usr/local/Isabelle
+      - TLA_PATH=/workspace/tla:/workspace/proofs
