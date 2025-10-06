@@ -25,6 +25,8 @@ jobs:
 
       - name: Build ArithmeticIsa image
         run: |
+          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
+          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
           cd proofs
           isabelle build -d . -b ArithmeticIsa
 
@@ -46,6 +48,8 @@ jobs:
       - name: Run TLAPS on all three safety modules
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
+          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
           for mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do
             echo "===== $mod ====="
             tlapm -C proofs/tlaps-ci.cfg "proofs/${mod}.tla" \
