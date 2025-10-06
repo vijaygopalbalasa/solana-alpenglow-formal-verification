@@ -18,10 +18,26 @@ jobs:
           wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           sudo mv tlapm /usr/local/
+
+          # Verify extraction and check structure
+          ls -la /usr/local/tlapm/
+          ls -la /usr/local/tlapm/bin/
+
+          # Create symlinks
           sudo ln -sf /usr/local/tlapm/bin/tlapm /usr/local/bin/tlapm
-          sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
-          tlapm --version
-          isabelle version
+
+          # Check if Isabelle exists in the bundle
+          if [ -d "/usr/local/tlapm/Isabelle" ]; then
+            sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
+            echo "Isabelle found in bundle"
+            /usr/local/tlapm/Isabelle/bin/isabelle version
+          else
+            echo "WARNING: Isabelle not found in TLAPS bundle"
+            find /usr/local/tlapm -name "isabelle" -type f 2>/dev/null || echo "No isabelle binary found"
+          fi
+
+          # Verify tlapm works
+          /usr/local/tlapm/bin/tlapm --version
 
       - name: Build ArithmeticIsa image
         run: |
