@@ -1,6 +1,12 @@
 name: CloseArithmetic
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/close_arithmetic.yaml'
+      - 'proofs/**'
+      - 'tla/**'
   workflow_dispatch:
 
 jobs:
@@ -14,17 +20,21 @@ jobs:
 
       - name: Download and install TLAPS 1.6.0-pre
         run: |
+          cd /tmp
           wget -q https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           sudo mv tlapm /usr/local/tlapm
+          rm tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           echo "/usr/local/tlapm/bin" >> $GITHUB_PATH
           /usr/local/tlapm/bin/tlapm --version
 
       - name: Download and install Isabelle 2025
         run: |
+          cd /tmp
           wget -q https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz
           tar -xzf Isabelle2025_linux.tar.gz
           sudo mv Isabelle2025 /usr/local/tlapm/Isabelle
+          rm Isabelle2025_linux.tar.gz
           echo "ISABELLE_HOME=/usr/local/tlapm/Isabelle" >> $GITHUB_ENV
           echo "/usr/local/tlapm/Isabelle/bin" >> $GITHUB_PATH
           /usr/local/tlapm/Isabelle/bin/isabelle version
@@ -45,11 +55,14 @@ jobs:
           image = ArithmeticIsa
           EOF
           cat tlaps-ci.cfg
-          echo "Config file location: $(pwd)/tlaps-ci.cfg"
+
+      - name: Create verification logs directory
+        run: mkdir -p verification_logs
 
       - name: Run TLAPS on QuorumIntersection
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          echo "===== Proving QuorumIntersection ====="
           echo "Working directory: $(pwd)"
           echo "TLA_PATH: $TLA_PATH"
           echo "ISABELLE_HOME: $ISABELLE_HOME"
@@ -58,23 +71,31 @@ jobs:
       - name: Run TLAPS on CertificateUniqueness
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          echo "===== Proving CertificateUniqueness ====="
           tlapm -C tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_certificate_ci.log || true
 
       - name: Run TLAPS on FinalizationSafety
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          echo "===== Proving FinalizationSafety ====="
           tlapm -C tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_finalization_ci.log || true
 
       - name: Show proof results
         if: always()
         run: |
-          echo "===== QuorumIntersection ====="
+          echo "=========================================="
+          echo "QuorumIntersection Results (last 30 lines):"
+          echo "=========================================="
           tail -n 30 verification_logs/tlaps_quorum_ci.log || echo "No log file"
           echo ""
-          echo "===== CertificateUniqueness ====="
+          echo "=========================================="
+          echo "CertificateUniqueness Results (last 30 lines):"
+          echo "=========================================="
           tail -n 30 verification_logs/tlaps_certificate_ci.log || echo "No log file"
           echo ""
-          echo "===== FinalizationSafety ====="
+          echo "=========================================="
+          echo "FinalizationSafety Results (last 30 lines):"
+          echo "=========================================="
           tail -n 30 verification_logs/tlaps_finalization_ci.log || echo "No log file"
 
       - name: Upload proof artefacts
