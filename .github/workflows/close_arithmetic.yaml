@@ -6,91 +6,63 @@ on:
 jobs:
   prove:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
+    timeout-minutes: 30
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Build and install TLAPS 1.6.0-pre with Isabelle backend
+      - name: Install TLAPS nightly, Isabelle, CVC5
         run: |
+          sudo add-apt-repository -y ppa:tlaplus/nightly
           sudo apt-get update
-          sudo apt-get install -y build-essential m4 libgmp-dev pkg-config unzip wget curl opam
+          sudo apt-get install -y tlaplus-proof-system isabelle isabelle-2022-cvc5
+          tlapm --version
+          isabelle version
 
-          opam init -y --disable-sandboxing
-          opam switch create tlapm 4.14.0
-          eval $(opam env --switch=tlapm)
-          opam install -y dune menhir zarith ppx_deriving batteries stdcompat
-
-          cd /tmp
-          git clone https://github.com/tlaplus/tlapm.git
-          cd tlapm
-          git checkout 386cb32
-
-          mkdir -p _build_cache
-          cd _build_cache
-          wget https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz
-          echo "3d1d66de371823fe31aa8ae66638f73575bac244f00b31aee1dcb62f38147c56  Isabelle2025_linux.tar.gz" | sha256sum -c -
-          cd ..
-
-          eval $(opam env --switch=tlapm)
-          make
-          sudo make install
-
-          /usr/local/bin/tlapm --version
-          /usr/local/lib/tlapm/Isabelle/bin/isabelle version
-
-      - name: Build ArithmeticIsa Isabelle image
+      - name: Prepare Isabelle components
         run: |
-          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
-          export PATH="${ISABELLE_HOME}/bin:$PATH"
+          isabelle components -u
+          isabelle install_cvc5
+
+      - name: Build ArithmeticIsa image
+        run: |
           cd proofs
-          isabelle build -d . -v ArithmeticIsa
+          # build the session image once
+          isabelle build -d . -b ArithmeticIsa
 
-      - name: Configure TLAPS to use Isabelle backend
+      - name: Write TLAPS config that uses the image
         run: |
-          cat > tlaps-ci.cfg <<'CFG'
+          cd proofs
+          cat > tlaps-ci.cfg <<'EOF'
           [prover]
-          isabelle = true
           timeout = 60
 
           [isabelle]
           enabled = true
           image = ArithmeticIsa
-          CFG
-          cat tlaps-ci.cfg
+          EOF
 
-      - name: Prepare log directory
+      - name: Create log directory
         run: mkdir -p verification_logs
 
-      - name: Run TLAPS on QuorumIntersection
+      - name: Run TLAPS on all three safety modules
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
-          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
-          export PATH="${ISABELLE_HOME}/bin:$PATH"
-          tlapm -C tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
+          for mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do
+            echo "===== $mod ====="
+            tlapm -C proofs/tlaps-ci.cfg "proofs/${mod}.tla" \
+              2>&1 | tee "verification_logs/tlaps_${mod,,}_ci.log"
+          done
 
-      - name: Run TLAPS on CertificateUniqueness
+      - name: Summarise results
         run: |
-          export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
-          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
-          export PATH="${ISABELLE_HOME}/bin:$PATH"
-          tlapm -C tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_certificate_ci.log
+          for f in verification_logs/tlaps_*_ci.log; do
+            echo "======== $f ========"
+            tail -n 10 "$f"
+          done
 
-      - name: Run TLAPS on FinalizationSafety
-        run: |
-          export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
-          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
-          export PATH="${ISABELLE_HOME}/bin:$PATH"
-          tlapm -C tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_finalization_ci.log
-
-      - name: Summarise TLAPS results
-        run: |
-          echo "QuorumIntersection:" && tail -5 verification_logs/tlaps_quorum_ci.log
-          echo "" && echo "CertificateUniqueness:" && tail -5 verification_logs/tlaps_certificate_ci.log
-          echo "" && echo "FinalizationSafety:" && tail -5 verification_logs/tlaps_finalization_ci.log
-
-      - name: Upload proof artefacts
+      - name: Upload closed-proof artefacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
@@ -98,5 +70,5 @@ jobs:
           path: |
             proofs/.tlacache/
             verification_logs/tlaps_*_ci.log
-            tlaps-ci.cfg
+            proofs/tlaps-ci.cfg
           retention-days: 30
