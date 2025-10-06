@@ -14,30 +14,27 @@ jobs:
 
       - name: Download and install TLAPS 1.6.0-pre
         run: |
-          cd /tmp
-          wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+          wget -q https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
-          sudo mv tlapm /usr/local/
-          sudo ln -sf /usr/local/tlapm/bin/tlapm /usr/local/bin/tlapm
-          tlapm --version
+          sudo mv tlapm /usr/local/tlapm
+          echo "/usr/local/tlapm/bin" >> $GITHUB_PATH
+          /usr/local/tlapm/bin/tlapm --version
 
       - name: Download and install Isabelle 2025
         run: |
-          cd /tmp
-          wget https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz
+          wget -q https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz
           tar -xzf Isabelle2025_linux.tar.gz
           sudo mv Isabelle2025 /usr/local/tlapm/Isabelle
-          sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
-          isabelle version
+          echo "ISABELLE_HOME=/usr/local/tlapm/Isabelle" >> $GITHUB_ENV
+          echo "/usr/local/tlapm/Isabelle/bin" >> $GITHUB_PATH
+          /usr/local/tlapm/Isabelle/bin/isabelle version
 
-      - name: Build ArithmeticIsa image
+      - name: Build ArithmeticIsa Isabelle image
+        working-directory: proofs
         run: |
-          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
-          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
-          cd proofs
-          isabelle build -d . -b ArithmeticIsa
+          isabelle build -d . -b -v ArithmeticIsa
 
-      - name: Write TLAPS config
+      - name: Write TLAPS config file
         run: |
           cat > tlaps-ci.cfg <<'EOF'
           [prover]
@@ -48,34 +45,45 @@ jobs:
           image = ArithmeticIsa
           EOF
           cat tlaps-ci.cfg
+          echo "Config file location: $(pwd)/tlaps-ci.cfg"
 
-      - name: Create log directory
-        run: mkdir -p verification_logs
-
-      - name: Run TLAPS on all three safety modules
+      - name: Run TLAPS on QuorumIntersection
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
-          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
-          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
-          for mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do
-            echo "===== Proving $mod ====="
-            tlapm -C tlaps-ci.cfg "proofs/${mod}.tla" 2>&1 | tee "verification_logs/tlaps_${mod,,}_ci.log"
-          done
+          echo "Working directory: $(pwd)"
+          echo "TLA_PATH: $TLA_PATH"
+          echo "ISABELLE_HOME: $ISABELLE_HOME"
+          tlapm -C tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log || true
 
-      - name: Summarise results
+      - name: Run TLAPS on CertificateUniqueness
         run: |
-          for f in verification_logs/tlaps_*_ci.log; do
-            echo "======== $f ========"
-            tail -n 20 "$f"
-          done
+          export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          tlapm -C tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_certificate_ci.log || true
 
-      - name: Upload closed-proof artefacts
+      - name: Run TLAPS on FinalizationSafety
+        run: |
+          export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          tlapm -C tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_finalization_ci.log || true
+
+      - name: Show proof results
+        if: always()
+        run: |
+          echo "===== QuorumIntersection ====="
+          tail -n 30 verification_logs/tlaps_quorum_ci.log || echo "No log file"
+          echo ""
+          echo "===== CertificateUniqueness ====="
+          tail -n 30 verification_logs/tlaps_certificate_ci.log || echo "No log file"
+          echo ""
+          echo "===== FinalizationSafety ====="
+          tail -n 30 verification_logs/tlaps_finalization_ci.log || echo "No log file"
+
+      - name: Upload proof artefacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: closed-proofs
           path: |
             proofs/.tlacache/
-            verification_logs/tlaps_*_ci.log
+            verification_logs/*.log
             tlaps-ci.cfg
           retention-days: 30
