@@ -34,40 +34,28 @@ jobs:
           tlapm --version
           isabelle version
 
-      - name: Build ArithmeticIsa
+      - name: Build ArithmeticIsa image
         run: |
           cd proofs
           isabelle build -d . -b -v ArithmeticIsa
 
-      - name: Create config and logs directory
+      - name: Setup environment
         run: |
           mkdir -p verification_logs
-          cat > proofs/tlaps-ci.cfg <<'EOF'
-          [prover]
-          timeout = 60
+          echo "ISABELLE_HOME=/usr/local/Isabelle" >> $GITHUB_ENV
+          echo "TLA_PATH=$PWD/tla:$PWD/proofs" >> $GITHUB_ENV
 
-          [isabelle]
-          enabled = true
-          image = ArithmeticIsa
-          EOF
-
-      - name: Prove QuorumIntersection
+      - name: Prove QuorumIntersection with Isabelle
         run: |
-          export TLA_PATH="$PWD/tla:$PWD/proofs"
-          cd proofs
-          tlapm --config tlaps-ci.cfg QuorumIntersection.tla 2>&1 | tee ../verification_logs/tlaps_quorum_ci.log
+          tlapm -C --stretch 6 -I proofs -I tla proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
 
-      - name: Prove CertificateUniqueness
+      - name: Prove CertificateUniqueness with Isabelle
         run: |
-          export TLA_PATH="$PWD/tla:$PWD/proofs"
-          cd proofs
-          tlapm --config tlaps-ci.cfg CertificateUniqueness.tla 2>&1 | tee ../verification_logs/tlaps_cert_ci.log
+          tlapm -C --stretch 6 -I proofs -I tla proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert_ci.log
 
-      - name: Prove FinalizationSafety
+      - name: Prove FinalizationSafety with Isabelle
         run: |
-          export TLA_PATH="$PWD/tla:$PWD/proofs"
-          cd proofs
-          tlapm --config tlaps-ci.cfg FinalizationSafety.tla 2>&1 | tee ../verification_logs/tlaps_final_ci.log
+          tlapm -C --stretch 6 -I proofs -I tla proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final_ci.log
 
       - name: Upload results
         if: always()
@@ -77,5 +65,4 @@ jobs:
           path: |
             proofs/.tlacache/
             verification_logs/*.log
-            proofs/tlaps-ci.cfg
           retention-days: 30
