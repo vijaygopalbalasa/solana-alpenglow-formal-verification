@@ -6,23 +6,43 @@ on:
 jobs:
   prove:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install TLAPS nightly, Isabelle, and CVC5
+      - name: Build and install TLAPS 1.6.0-pre with Isabelle backend
         run: |
-          sudo add-apt-repository -y ppa:tlaplus/nightly
           sudo apt-get update
-          sudo apt-get install -y tlapl isabelle isabelle-2022-cvc5
-          tlapm --version
-          isabelle version
+          sudo apt-get install -y build-essential m4 libgmp-dev pkg-config unzip wget curl opam
+
+          opam init -y --disable-sandboxing
+          opam switch create tlapm 4.14.0
+          eval $(opam env --switch=tlapm)
+          opam install -y dune menhir zarith ppx_deriving batteries stdcompat
+
+          cd /tmp
+          git clone https://github.com/tlaplus/tlapm.git
+          cd tlapm
+          git checkout 386cb32
+
+          mkdir -p _build_cache
+          cd _build_cache
+          wget https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz
+          echo "3d1d66de371823fe31aa8ae66638f73575bac244f00b31aee1dcb62f38147c56  Isabelle2025_linux.tar.gz" | sha256sum -c -
+          cd ..
+
+          eval $(opam env --switch=tlapm)
+          make
+          sudo make install
+
+          /usr/local/bin/tlapm --version
+          /usr/local/lib/tlapm/Isabelle/bin/isabelle version
 
       - name: Build ArithmeticIsa Isabelle image
         run: |
-          export ISABELLE_HOME=/usr/lib/isabelle
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
           export PATH="${ISABELLE_HOME}/bin:$PATH"
           cd proofs
           isabelle build -d . -v ArithmeticIsa
@@ -46,16 +66,22 @@ jobs:
       - name: Run TLAPS on QuorumIntersection
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="${ISABELLE_HOME}/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
 
       - name: Run TLAPS on CertificateUniqueness
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="${ISABELLE_HOME}/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_certificate_ci.log
 
       - name: Run TLAPS on FinalizationSafety
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="${ISABELLE_HOME}/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_finalization_ci.log
 
       - name: Summarise TLAPS results
