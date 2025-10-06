@@ -6,72 +6,76 @@ on:
 jobs:
   prove:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install runtime dependencies
+      - name: Download and install TLAPS 1.6.0-pre
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libgmp-dev unzip wget
+          cd /tmp
+          wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+          tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+          sudo mv tlapm /usr/local/
+          sudo ln -sf /usr/local/tlapm/bin/tlapm /usr/local/bin/tlapm
+          tlapm --version
 
-      - name: Download TLAPS bundle (with Isabelle)
+      - name: Download and install Isabelle 2025
         run: |
-          mkdir -p /opt/tlaps
-          wget https://github.com/tlaplus/tlapm/releases/download/v1.5.2/tlaps-1.5.2-linux.zip
-          unzip -q tlaps-1.5.2-linux.zip -d /opt/tlaps
-          /opt/tlaps/tlaps-1.5.2/bin/tlapm --version
-          /opt/tlaps/tlaps-1.5.2/bin/isabelle version
+          cd /tmp
+          wget https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz
+          tar -xzf Isabelle2025_linux.tar.gz
+          sudo mv Isabelle2025 /usr/local/tlapm/Isabelle
+          sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
+          isabelle version
 
-      - name: Build ArithmeticIsa Isabelle image
+      - name: Build ArithmeticIsa image
         run: |
-          export PATH="/opt/tlaps/tlaps-1.5.2/bin:$PATH"
+          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
+          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
           cd proofs
           isabelle build -d . -b ArithmeticIsa
 
-      - name: Configure TLAPS to use Isabelle image
+      - name: Write TLAPS config
         run: |
-          cat > proofs/tlaps-ci.cfg <<'CFG'
+          cat > tlaps-ci.cfg <<'EOF'
           [prover]
           timeout = 60
 
           [isabelle]
           enabled = true
           image = ArithmeticIsa
-          CFG
-          cat proofs/tlaps-ci.cfg
+          EOF
+          cat tlaps-ci.cfg
 
-      - name: Prepare log directory
+      - name: Create log directory
         run: mkdir -p verification_logs
 
-      - name: Run TLAPS on safety modules
+      - name: Run TLAPS on all three safety modules
         run: |
-          export PATH="/opt/tlaps/tlaps-1.5.2/bin:$PATH"
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
-          CFG="$(pwd)/proofs/tlaps-ci.cfg"
+          export ISABELLE_HOME=/usr/local/tlapm/Isabelle
+          export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
           for mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do
-            echo "===== $mod ====="
-            tlapm -C "$CFG" "proofs/${mod}.tla" \
-              2>&1 | tee "verification_logs/tlaps_${mod,,}_ci.log"
+            echo "===== Proving $mod ====="
+            tlapm -C tlaps-ci.cfg "proofs/${mod}.tla" 2>&1 | tee "verification_logs/tlaps_${mod,,}_ci.log"
           done
 
-      - name: Summarise TLAPS results
+      - name: Summarise results
         run: |
           for f in verification_logs/tlaps_*_ci.log; do
             echo "======== $f ========"
-            tail -n 10 "$f"
+            tail -n 20 "$f"
           done
 
-      - name: Upload proof artefacts
+      - name: Upload closed-proof artefacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: closed-proofs
           path: |
             proofs/.tlacache/
-            proofs/*/*.proof
             verification_logs/tlaps_*_ci.log
-            proofs/tlaps-ci.cfg
+            tlaps-ci.cfg
           retention-days: 30
