@@ -42,7 +42,7 @@ jobs:
       - name: Create config and logs directory
         run: |
           mkdir -p verification_logs
-          cat > tlaps-ci.cfg <<'EOF'
+          cat > proofs/tlaps-ci.cfg <<'EOF'
           [prover]
           timeout = 60
 
@@ -54,18 +54,20 @@ jobs:
       - name: Prove QuorumIntersection
         run: |
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          export TLAPM_EXTRA_ARGS="--config tlaps-ci.cfg"
-          tlapm --config tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
+          cd proofs
+          tlapm --config tlaps-ci.cfg QuorumIntersection.tla 2>&1 | tee ../verification_logs/tlaps_quorum_ci.log
 
       - name: Prove CertificateUniqueness
         run: |
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          tlapm --config tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert_ci.log
+          cd proofs
+          tlapm --config tlaps-ci.cfg CertificateUniqueness.tla 2>&1 | tee ../verification_logs/tlaps_cert_ci.log
 
       - name: Prove FinalizationSafety
         run: |
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          tlapm --config tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final_ci.log
+          cd proofs
+          tlapm --config tlaps-ci.cfg FinalizationSafety.tla 2>&1 | tee ../verification_logs/tlaps_final_ci.log
 
       - name: Upload results
         if: always()
@@ -75,5 +77,5 @@ jobs:
           path: |
             proofs/.tlacache/
             verification_logs/*.log
-            tlaps-ci.cfg
+            proofs/tlaps-ci.cfg
           retention-days: 30
