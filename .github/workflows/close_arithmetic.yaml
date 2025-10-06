@@ -37,6 +37,11 @@ jobs:
           cd tlapm
           opam update
           opam install -y dune menhir zarith ppx_deriving batteries stdcompat
+
+          # Build with relaxed C++ warnings to avoid ls4 compilation failures
+          export CXXFLAGS="-Wno-error -Wno-class-memaccess -std=c++14"
+          export CFLAGS="-Wno-error"
+
           make
           sudo make install PREFIX=/usr/local
           tlapm --version
