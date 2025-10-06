@@ -1,6 +1,8 @@
 name: CloseArithmetic
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
