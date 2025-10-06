@@ -18,32 +18,28 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Download and install TLAPS 1.6.0-pre (with bundled Isabelle)
+      - name: Download and install TLAPS 1.6.0-pre
         run: |
           cd /tmp
           wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
           sudo mv tlapm /usr/local/
-
-          # Verify extraction and check structure
-          ls -la /usr/local/tlapm/
-          ls -la /usr/local/tlapm/bin/
-
-          # Create symlinks
           sudo ln -sf /usr/local/tlapm/bin/tlapm /usr/local/bin/tlapm
+          tlapm --version
 
-          # Check if Isabelle exists in the bundle
-          if [ -d "/usr/local/tlapm/Isabelle" ]; then
-            sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
-            echo "Isabelle found in bundle"
-            /usr/local/tlapm/Isabelle/bin/isabelle version
-          else
-            echo "WARNING: Isabelle not found in TLAPS bundle"
-            find /usr/local/tlapm -name "isabelle" -type f 2>/dev/null || echo "No isabelle binary found"
-          fi
+      - name: Download and install Isabelle 2025
+        run: |
+          cd /tmp
+          # Try multiple mirrors
+          wget --no-check-certificate https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          curl -L -k -o Isabelle2025_linux.tar.gz https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          wget http://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          curl -L -o Isabelle2025_linux.tar.gz http://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz
 
-          # Verify tlapm works
-          /usr/local/tlapm/bin/tlapm --version
+          tar -xzf Isabelle2025_linux.tar.gz
+          sudo mv Isabelle2025 /usr/local/tlapm/Isabelle
+          sudo ln -sf /usr/local/tlapm/Isabelle/bin/isabelle /usr/local/bin/isabelle
+          isabelle version
 
       - name: Build ArithmeticIsa image
         run: |
