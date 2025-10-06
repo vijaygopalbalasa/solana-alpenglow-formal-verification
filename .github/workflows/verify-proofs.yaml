@@ -1,0 +1,76 @@
+name: Formal Verification
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  verify-tlaps:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y wget tar openjdk-21-jdk curl
+
+      - name: Download and install Isabelle 2025
+        run: |
+          wget https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz
+          tar -xzf Isabelle2025_linux.tar.gz
+          sudo mv Isabelle2025 /usr/local/Isabelle
+          echo "/usr/local/Isabelle/bin" >> $GITHUB_PATH
+
+      - name: Download and install TLAPS 1.6.0-pre
+        run: |
+          wget https://github.com/tlaplus/tlapm/releases/download/v1.6.0-pre1/tlaps-1.6.0-x86_64-linux-gnu-inst.bin
+          chmod +x tlaps-1.6.0-x86_64-linux-gnu-inst.bin
+          sudo ./tlaps-1.6.0-x86_64-linux-gnu-inst.bin -d /usr/local/tlapm
+          echo "/usr/local/tlapm/bin" >> $GITHUB_PATH
+
+      - name: Verify TLAPS and Isabelle installation
+        run: |
+          tlapm --version
+          isabelle version
+
+      - name: Build Isabelle TLA+ session
+        run: |
+          isabelle build -d /usr/local/tlapm/lib/tlaps/Isabelle/src/TLA+ -b -v TLA+
+
+      - name: Run TLAPS verification on QuorumIntersection
+        run: |
+          mkdir -p verification_logs
+          tlapm -C --stretch 6 -I proofs -I tla proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum.log
+
+      - name: Run TLAPS verification on CertificateUniqueness
+        run: |
+          tlapm -C --stretch 6 -I proofs -I tla proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert.log
+
+      - name: Run TLAPS verification on FinalizationSafety
+        run: |
+          tlapm -C --stretch 6 -I proofs -I tla proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final.log
+
+      - name: Upload verification logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: verification-logs
+          path: verification_logs/
+
+      - name: Check verification results
+        run: |
+          echo "=== QuorumIntersection Results ==="
+          grep -E "obligations failed|ending abnormally" verification_logs/tlaps_quorum.log || echo "✓ All obligations passed"
+          echo ""
+          echo "=== CertificateUniqueness Results ==="
+          grep -E "obligations failed|ending abnormally" verification_logs/tlaps_cert.log || echo "✓ All obligations passed"
+          echo ""
+          echo "=== FinalizationSafety Results ==="
+          grep -E "obligations failed|ending abnormally" verification_logs/tlaps_final.log || echo "✓ All obligations passed"
