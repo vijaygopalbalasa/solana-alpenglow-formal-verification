@@ -19,7 +19,8 @@ jobs:
       - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y wget tar openjdk-21-jdk curl
+          sudo apt-get install -y wget tar openjdk-21-jdk curl git build-essential \
+            zlib1g-dev gawk time m4 pkg-config libgmp-dev bubblewrap unzip rsync
 
       - name: Download and install Isabelle 2025
         run: |
@@ -28,11 +29,26 @@ jobs:
           sudo mv Isabelle2025 /usr/local/Isabelle
           echo "/usr/local/Isabelle/bin" >> $GITHUB_PATH
 
-      - name: Download and install TLAPS 1.6.0-pre
+      - name: Install OPAM
         run: |
-          wget https://github.com/tlaplus/tlapm/releases/download/v1.6.0-pre1/tlaps-1.6.0-x86_64-linux-gnu-inst.bin
-          chmod +x tlaps-1.6.0-x86_64-linux-gnu-inst.bin
-          sudo ./tlaps-1.6.0-x86_64-linux-gnu-inst.bin -d /usr/local/tlapm
+          wget https://github.com/ocaml/opam/releases/download/2.3.0/opam-2.3.0-x86_64-linux -O opam
+          sudo mv opam /usr/local/bin/opam
+          sudo chmod +x /usr/local/bin/opam
+
+      - name: Build TLAPS 1.6.0 from source
+        run: |
+          git clone https://github.com/tlaplus/tlapm.git /tmp/tlapm
+          cd /tmp/tlapm
+          git checkout 386cb32
+          opam init -y --disable-sandboxing --bare
+          opam switch create 5.1.0
+          eval $(opam env --switch=5.1.0 --set-switch)
+          make opam-update
+          make opam-deps
+          make opam-deps-opt
+          make
+          sudo mkdir -p /usr/local/tlapm
+          sudo cp -r bin lib /usr/local/tlapm/
           echo "/usr/local/tlapm/bin" >> $GITHUB_PATH
 
       - name: Verify TLAPS and Isabelle installation
@@ -42,9 +58,9 @@ jobs:
 
       - name: Copy arithmetic theory to TLAPS Isabelle directory
         run: |
-          sudo mkdir -p /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted
-          sudo cp proofs/ArithmeticIsa.thy /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted/
-          sudo tee /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted/ROOT <<'EOF'
+          sudo mkdir -p /usr/local/tlapm/lib/tlapm/backends/Isabelle/src/Unsorted
+          sudo cp proofs/ArithmeticIsa.thy /usr/local/tlapm/lib/tlapm/backends/Isabelle/src/Unsorted/
+          sudo tee /usr/local/tlapm/lib/tlapm/backends/Isabelle/src/Unsorted/ROOT <<'EOF'
           session "Unsorted" in "." = "HOL" +
             theories
               ArithmeticIsa
@@ -52,11 +68,11 @@ jobs:
 
       - name: Build Isabelle Unsorted session with arithmetic lemmas
         run: |
-          isabelle build -d /usr/local/tlapm/lib/tlaps/Isabelle/src -b -v Unsorted
+          isabelle build -d /usr/local/tlapm/lib/tlapm/backends/Isabelle/src -b -v Unsorted
 
       - name: Build Isabelle TLA+ session
         run: |
-          isabelle build -d /usr/local/tlapm/lib/tlaps/Isabelle/src/TLA+ -b -v TLA+
+          isabelle build -d /usr/local/tlapm/lib/tlapm/backends/Isabelle/src/TLA+ -b -v TLA+
 
       - name: Run TLAPS verification on QuorumIntersection
         run: |
