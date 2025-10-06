@@ -53,20 +53,19 @@ jobs:
 
       - name: Prove QuorumIntersection
         run: |
-          pwd
-          ls -la tlaps-ci.cfg
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          tlapm -C "$PWD/tlaps-ci.cfg" proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
+          export TLAPM_EXTRA_ARGS="--config tlaps-ci.cfg"
+          tlapm --config tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
 
       - name: Prove CertificateUniqueness
         run: |
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          tlapm -C "$PWD/tlaps-ci.cfg" proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert_ci.log
+          tlapm --config tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert_ci.log
 
       - name: Prove FinalizationSafety
         run: |
           export TLA_PATH="$PWD/tla:$PWD/proofs"
-          tlapm -C "$PWD/tlaps-ci.cfg" proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final_ci.log
+          tlapm --config tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final_ci.log
 
       - name: Upload results
         if: always()
