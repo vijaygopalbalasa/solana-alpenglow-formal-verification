@@ -12,42 +12,60 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Install Isabelle 2025
-        run: |
-          cd /tmp
-          wget --no-check-certificate https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz || \
-          curl -L -k -o Isabelle2025_linux.tar.gz https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz || \
-          wget https://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz
-          tar -xzf Isabelle2025_linux.tar.gz
-          sudo mv Isabelle2025 /opt/
-          sudo ln -sf /opt/Isabelle2025/bin/isabelle /usr/local/bin/isabelle
-          isabelle version
-
-      - name: Install TLAPS 1.6.0-pre dependencies
+      - name: Install system dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y opam ocaml m4 pkg-config libgmp-dev zlib1g-dev
+          sudo apt-get install -y opam ocaml m4 pkg-config libgmp-dev zlib1g-dev g++ make wget curl
 
-      - name: Setup opam and install TLAPS 1.6.0-pre
+      - name: Clone TLAPS 1.6.0-pre and pre-download Isabelle
         run: |
-          opam init -y --disable-sandboxing
-          eval $(opam env)
           cd /tmp
           git clone --depth 1 https://github.com/tlaplus/tlapm.git
           cd tlapm
+
+          # Create the exact cache directory TLAPS expects
+          mkdir -p _build_cache
+
+          # Download Isabelle to the EXACT location TLAPS build expects
+          cd _build_cache
+          wget --no-check-certificate https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          curl -L -k -o Isabelle2025_linux.tar.gz https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          wget https://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz 2>/dev/null || \
+          curl -L -o Isabelle2025_linux.tar.gz https://mirror.cse.unsw.edu.au/pub/isabelle/release/Isabelle2025_linux.tar.gz
+
+          # Verify checksum (TLAPS expects this exact SHA256)
+          echo "3d1d66de371823fe31aa8ae66638f73575bac244f00b31aee1dcb62f38147c56 *Isabelle2025_linux.tar.gz" | shasum -a 256 -c -
+
+          ls -lh Isabelle2025_linux.tar.gz
+
+      - name: Setup opam and build TLAPS 1.6.0-pre
+        run: |
+          opam init -y --disable-sandboxing
+          eval $(opam env)
+
+          cd /tmp/tlapm
+
+          # Install OCaml dependencies
           opam update
           opam install -y dune menhir zarith ppx_deriving batteries stdcompat
 
-          # Build with relaxed C++ warnings to avoid ls4 compilation failures
+          # Set compiler flags to bypass C++ warnings in vendored deps
           export CXXFLAGS="-Wno-error -Wno-class-memaccess -std=c++14"
           export CFLAGS="-Wno-error"
 
+          # Build TLAPS (will use pre-downloaded Isabelle from _build_cache)
+          eval $(opam env)
           make
           sudo make install PREFIX=/usr/local
+
           tlapm --version
+          ls -la /usr/local/lib/tlapm/
+          /usr/local/lib/tlapm/Isabelle/bin/isabelle version
 
       - name: Build ArithmeticIsa Isabelle image
         run: |
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="/usr/local/lib/tlapm/Isabelle/bin:$PATH"
           cd proofs
           isabelle build -d . -b ArithmeticIsa
 
@@ -69,16 +87,22 @@ jobs:
       - name: Run TLAPS on QuorumIntersection
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="/usr/local/lib/tlapm/Isabelle/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_ci.log
 
       - name: Run TLAPS on CertificateUniqueness
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="/usr/local/lib/tlapm/Isabelle/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_certificate_ci.log
 
       - name: Run TLAPS on FinalizationSafety
         run: |
           export TLA_PATH="$(pwd)/tla:$(pwd)/proofs"
+          export ISABELLE_HOME=/usr/local/lib/tlapm/Isabelle
+          export PATH="/usr/local/lib/tlapm/Isabelle/bin:$PATH"
           tlapm -C tlaps-ci.cfg proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_finalization_ci.log
 
       - name: Summarise TLAPS results
