@@ -40,6 +40,20 @@ jobs:
           tlapm --version
           isabelle version
 
+      - name: Copy arithmetic theory to TLAPS Isabelle directory
+        run: |
+          sudo mkdir -p /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted
+          sudo cp proofs/ArithmeticIsa.thy /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted/
+          sudo tee /usr/local/tlapm/lib/tlaps/Isabelle/src/Unsorted/ROOT <<'EOF'
+          session "Unsorted" in "." = "HOL" +
+            theories
+              ArithmeticIsa
+          EOF
+
+      - name: Build Isabelle Unsorted session with arithmetic lemmas
+        run: |
+          isabelle build -d /usr/local/tlapm/lib/tlaps/Isabelle/src -b -v Unsorted
+
       - name: Build Isabelle TLA+ session
         run: |
           isabelle build -d /usr/local/tlapm/lib/tlaps/Isabelle/src/TLA+ -b -v TLA+
