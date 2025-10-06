@@ -47,7 +47,6 @@ jobs:
 
       - name: Write TLAPS config that uses the image
         run: |
-          cd proofs
           cat > tlaps-ci.cfg <<'EOF'
           [prover]
           timeout = 60
@@ -56,6 +55,7 @@ jobs:
           enabled = true
           image = ArithmeticIsa
           EOF
+          cat tlaps-ci.cfg
 
       - name: Create log directory
         run: mkdir -p verification_logs
@@ -67,7 +67,7 @@ jobs:
           export PATH="/usr/local/tlapm/Isabelle/bin:$PATH"
           for mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do
             echo "===== $mod ====="
-            tlapm -C proofs/tlaps-ci.cfg "proofs/${mod}.tla" \
+            tlapm -C tlaps-ci.cfg "proofs/${mod}.tla" \
               2>&1 | tee "verification_logs/tlaps_${mod,,}_ci.log"
           done
 
@@ -85,7 +85,6 @@ jobs:
           name: closed-proofs
           path: |
             proofs/.tlacache/
-            proofs/*/*.proof
             verification_logs/tlaps_*_ci.log
-            proofs/tlaps-ci.cfg
+            tlaps-ci.cfg
           retention-days: 30
