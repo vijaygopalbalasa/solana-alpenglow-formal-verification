@@ -27,11 +27,16 @@ run_tlc() {
     return 1
   fi
   echo "=== TLC: ${cfg} ==="
+  # Choose spec file based on config prefix; default to AlpenglowMC for legacy configs
+  local spec_file="/workspace/tla/AlpenglowMC.tla"
+  if [[ "$cfg" == AlpenglowFull* ]]; then
+    spec_file="/workspace/tla/AlpenglowFull.tla"
+  fi
   java -XX:+UseParallelGC -Xmx8G -Xms2G \
     -cp /workspace/tools/tla2tools.jar tlc2.TLC \
     -workers auto -coverage 1 -deadlock -cleanup \
     -config "$cfg_file" \
-    /workspace/tla/AlpenglowMC.tla 2>&1 | tee "$log_file"
+    "$spec_file" 2>&1 | tee "$log_file"
   echo ""
 }
 
@@ -44,6 +49,9 @@ case "$MODE" in
     ;;
   full)
     CFGS=("AlpenglowMC_4val" "AlpenglowMC_6val" "AlpenglowMC_8val" "AlpenglowMC_10val")
+    ;;
+  large)
+    CFGS=("AlpenglowFull_8val_fast" "AlpenglowFull_10val_fast")
     ;;
   *)
     echo "Unknown mode: $MODE" >&2
