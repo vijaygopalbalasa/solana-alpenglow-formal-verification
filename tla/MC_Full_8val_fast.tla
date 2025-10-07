@@ -3,8 +3,7 @@ EXTENDS Naturals, FiniteSets, Sequences, TLC
 
 M == INSTANCE AlpenglowFull WITH
   Validators <- 1..8,
-  Stake <- ([i \in 1..8 |-> 12]
-            EXCEPT ![5] = 13, ![6] = 13, ![7] = 13, ![8] = 13),
+  Stake <- [i \in 1..8 |-> IF i >= 5 THEN 13 ELSE 12],
   MaxSlot <- 1,
   FastThreshold <- 80,
   SlowThreshold <- 60,
