@@ -1,5 +1,5 @@
 theory ArithmeticIsa
-  imports "$ISABELLE_HOME/src/HOL/HOL"
+  imports Main
 begin
 
 (* Arithmetic lemmas for Solana Alpenglow consensus protocol verification *)

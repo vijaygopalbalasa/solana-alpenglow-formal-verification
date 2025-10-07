@@ -1,5 +1,5 @@
 ---- MODULE QuorumIntersection ----
-EXTENDS Naturals, FiniteSets, TLAPS
+EXTENDS FiniteSets, StakeArithmetic
 
 (*
     This module proves quorum intersection properties for Alpenglow consensus.
@@ -49,18 +49,6 @@ AXIOM ThresholdBounds ==
     /\ 2 * FastThreshold > TotalStake
     /\ 2 * SlowThreshold > TotalStake
 
-AXIOM ArithmeticSubtraction ==
-    \A a, b, c \in Nat : (a + b >= c) => (a >= c - b \/ b >= c - a)
-
-AXIOM ArithmeticDoubling ==
-    \A a, c \in Nat : (a >= c /\ a >= c) => (a + a >= 2 * c)
-
-AXIOM ArithmeticInequality ==
-    \A a, b, c \in Nat : ((a >= b + c) /\ (c > 0)) => (a > b)
-
-AXIOM ArithmeticTransitivity ==
-    \A a, b, c \in Nat : (a >= b /\ b >= c) => a >= c
-
 LEMMA IntersectionStakeLowerBound ==
     ASSUME NEW S1 \in SUBSET Validators,
            NEW S2 \in SUBSET Validators
@@ -72,12 +60,20 @@ PROOF
     BY SumStakeBound
   <1>3. SumStake(S1 \cup S2) \in Nat /\ SumStake(S1 \cap S2) \in Nat
     BY SumStakeNat
-  <1>4. SumStake(S1) + SumStake(S2) <= TotalStake + SumStake(S1 \cap S2)
-    BY <1>1, <1>2, <1>3, ArithmeticTransitivity, ArithmeticSubtraction
-  <1>5. SumStake(S1) \in Nat /\ SumStake(S2) \in Nat /\ TotalStake \in Nat
+  <1>4. SumStake(S1 \cup S2) + SumStake(S1 \cap S2) <= TotalStake + SumStake(S1 \cap S2)
+    BY <1>2, <1>3, ThresholdBounds, NatAddMonotone
+  <1>5. SumStake(S1) + SumStake(S2) = SumStake(S1 \cup S2) + SumStake(S1 \cap S2)
+    BY <1>1
+  <1>6. TotalStake + SumStake(S1 \cap S2) >= SumStake(S1 \cup S2) + SumStake(S1 \cap S2)
+    BY <1>2, <1>3, ThresholdBounds, NatAddMonotoneGe
+  <1>7. SumStake(S1 \cap S2) + TotalStake = TotalStake + SumStake(S1 \cap S2)
+    BY <1>3, ThresholdBounds, NatAddCommute
+  <1>8. SumStake(S1 \cap S2) + TotalStake >= SumStake(S1) + SumStake(S2)
+    BY <1>5, <1>6, <1>7
+  <1>9. SumStake(S1) \in Nat /\ SumStake(S2) \in Nat /\ TotalStake \in Nat
     BY SumStakeNat, ThresholdBounds
-  <1>6. QED
-    BY <1>4, <1>5, ArithmeticSubtraction
+  <1>10. QED
+    BY <1>8, <1>9, <1>3, AddToSubtraction
 
 LEMMA DoubleLowerBound ==
     ASSUME NEW a \in Nat,
@@ -86,7 +82,7 @@ LEMMA DoubleLowerBound ==
            a >= c,
            b >= c
     PROVE a + b >= 2 * c
-PROOF BY ArithmeticDoubling
+PROOF OBVIOUS
 
 LEMMA FastIntersection ==
     ASSUME NEW Q1 \in SUBSET Validators,
@@ -95,19 +91,22 @@ LEMMA FastIntersection ==
            SumStake(Q2) >= FastThreshold
     PROVE Q1 \cap Q2 # {}
 PROOF
-  <1>1. SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake
-    BY IntersectionStakeLowerBound
-  <1>2. SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold
+  <1>1. SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold
     BY DoubleLowerBound, ThresholdBounds, SumStakeNat
-  <1>3. 2 * FastThreshold - TotalStake > 0
-    BY ThresholdBounds, ArithmeticInequality
-  <1>4. ASSUME Q1 \cap Q2 = {}
+  <1>2. ASSUME Q1 \cap Q2 = {}
         PROVE FALSE
-    <2>1. SumStake(Q1 \cap Q2) = 0 BY <1>4, SumStakeEmpty
-    <2>2. 0 >= 2 * FastThreshold - TotalStake
-        BY <1>1, <1>2, <2>1, SumStakeNat, ArithmeticTransitivity, ArithmeticSubtraction
-    <2>3. QED BY <2>2, <1>3, ArithmeticInequality
-  <1>5. QED BY <1>4
+    <2>1. SumStake(Q1) + SumStake(Q2) = SumStake(Q1 \cup Q2)
+        BY <1>2, SumStakeDisjoint
+    <2>2. SumStake(Q1 \cup Q2) <= TotalStake BY SumStakeBound
+    <2>3. SumStake(Q1) + SumStake(Q2) <= TotalStake
+        BY <2>1, <2>2
+    <2>4. SumStake(Q1) \in Nat /\ SumStake(Q2) \in Nat
+        BY SumStakeNat
+    <2>5. TotalStake >= 2 * FastThreshold
+        BY <1>1, <2>3, <2>4, ThresholdBounds, UpperLowerTrans
+    <2>6. FALSE BY <2>5, ThresholdBounds, GreaterAndLessContradiction
+    <2>7. QED BY <2>6
+  <1>3. QED BY <1>2
 
 LEMMA SlowIntersection ==
     ASSUME NEW Q1 \in SUBSET Validators,
@@ -116,19 +115,22 @@ LEMMA SlowIntersection ==
            SumStake(Q2) >= SlowThreshold
     PROVE Q1 \cap Q2 # {}
 PROOF
-  <1>1. SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake
-    BY IntersectionStakeLowerBound
-  <1>2. SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold
+  <1>1. SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold
     BY DoubleLowerBound, ThresholdBounds, SumStakeNat
-  <1>3. 2 * SlowThreshold - TotalStake > 0
-    BY ThresholdBounds, ArithmeticInequality
-  <1>4. ASSUME Q1 \cap Q2 = {}
+  <1>2. ASSUME Q1 \cap Q2 = {}
         PROVE FALSE
-    <2>1. SumStake(Q1 \cap Q2) = 0 BY <1>4, SumStakeEmpty
-    <2>2. 0 >= 2 * SlowThreshold - TotalStake
-        BY <1>1, <1>2, <2>1, SumStakeNat, ArithmeticTransitivity, ArithmeticSubtraction
-    <2>3. QED BY <2>2, <1>3, ArithmeticInequality
-  <1>5. QED BY <1>4
+    <2>1. SumStake(Q1) + SumStake(Q2) = SumStake(Q1 \cup Q2)
+        BY <1>2, SumStakeDisjoint
+    <2>2. SumStake(Q1 \cup Q2) <= TotalStake BY SumStakeBound
+    <2>3. SumStake(Q1) + SumStake(Q2) <= TotalStake
+        BY <2>1, <2>2
+    <2>4. SumStake(Q1) \in Nat /\ SumStake(Q2) \in Nat
+        BY SumStakeNat
+    <2>5. TotalStake >= 2 * SlowThreshold
+        BY <1>1, <2>3, <2>4, ThresholdBounds, UpperLowerTrans
+    <2>6. FALSE BY <2>5, ThresholdBounds, GreaterAndLessContradiction
+    <2>7. QED BY <2>6
+  <1>3. QED BY <1>2
 
 THEOREM FastQuorumsIntersect ==
     \A Q1, Q2 \in SUBSET Validators :
@@ -153,10 +155,76 @@ PROOF
     BY IntersectionStakeLowerBound
   <1>2. SumStake(Q1) + SumStake(Q2) >= 2 * FastThreshold
     BY DoubleLowerBound, ThresholdBounds, SumStakeNat
-  <1>3. 2 * FastThreshold > TotalStake
+  <1>3. SumStake(Q1) + SumStake(Q2) <= SumStake(Q1 \cap Q2) + TotalStake
+    BY <1>1, ThresholdBounds, SumStakeNat, NatAddMonotone
+  <1>4. SumStake(Q1 \cap Q2) + TotalStake >= SumStake(Q1) + SumStake(Q2)
+    BY <1>3
+  <1>5. SumStake(Q1 \cap Q2) + TotalStake >= 2 * FastThreshold
+    BY <1>2, <1>4, ThresholdBounds, SumStakeNat, NatGeTrans
+  <1>6. QED
+    BY <1>5, ThresholdBounds, SumStakeNat, AddToSubtraction
+
+LEMMA SlowIntersectionStakeBound ==
+    ASSUME NEW Q1 \in SUBSET Validators,
+           NEW Q2 \in SUBSET Validators,
+           SumStake(Q1) >= SlowThreshold,
+           SumStake(Q2) >= SlowThreshold
+    PROVE SumStake(Q1 \cap Q2) >= 2 * SlowThreshold - TotalStake
+PROOF
+  <1>1. SumStake(Q1 \cap Q2) >= SumStake(Q1) + SumStake(Q2) - TotalStake
+    BY IntersectionStakeLowerBound
+  <1>2. SumStake(Q1) + SumStake(Q2) >= 2 * SlowThreshold
+    BY DoubleLowerBound, ThresholdBounds, SumStakeNat
+  <1>3. SumStake(Q1) + SumStake(Q2) <= SumStake(Q1 \cap Q2) + TotalStake
+    BY <1>1, ThresholdBounds, SumStakeNat, NatAddMonotone
+  <1>4. SumStake(Q1 \cap Q2) + TotalStake >= SumStake(Q1) + SumStake(Q2)
+    BY <1>3
+  <1>5. SumStake(Q1 \cap Q2) + TotalStake >= 2 * SlowThreshold
+    BY <1>2, <1>4, ThresholdBounds, SumStakeNat, NatGeTrans
+  <1>6. QED
+    BY <1>5, ThresholdBounds, SumStakeNat, AddToSubtraction
+
+LEMMA FastByzantineStakeLowerBound ==
+    ASSUME NEW Q1 \in SUBSET Validators,
+           NEW Q2 \in SUBSET Validators,
+           NEW BSet \in SUBSET Validators,
+           SumStake(Q1) >= FastThreshold,
+           SumStake(Q2) >= FastThreshold,
+           Q1 \cap Q2 \subseteq BSet
+    PROVE SumStake(BSet) >= 2 * FastThreshold - TotalStake
+PROOF
+  <1>1. SumStake(Q1 \cap Q2) >= 2 * FastThreshold - TotalStake
+    BY FastIntersectionStakeBound
+  <1>2. SumStake(Q1 \cap Q2) <= SumStake(BSet)
+    BY SumStakeMonotone
+  <1>3. SumStake(BSet) \in Nat /\ SumStake(Q1 \cap Q2) \in Nat
+    BY SumStakeNat
+  <1>4. 2 * FastThreshold - TotalStake \in Nat
     BY ThresholdBounds
-  <1>4. QED
-    BY <1>1, <1>2, <1>3, SumStakeNat, ThresholdBounds, ArithmeticTransitivity, ArithmeticSubtraction
+  <1>5. SumStake(BSet) >= 2 * FastThreshold - TotalStake
+    BY <1>1, <1>2, <1>3, <1>4, UpperLowerTrans
+  <1>6. QED BY <1>5
+
+LEMMA SlowByzantineStakeLowerBound ==
+    ASSUME NEW Q1 \in SUBSET Validators,
+           NEW Q2 \in SUBSET Validators,
+           NEW BSet \in SUBSET Validators,
+           SumStake(Q1) >= SlowThreshold,
+           SumStake(Q2) >= SlowThreshold,
+           Q1 \cap Q2 \subseteq BSet
+    PROVE SumStake(BSet) >= 2 * SlowThreshold - TotalStake
+PROOF
+  <1>1. SumStake(Q1 \cap Q2) >= 2 * SlowThreshold - TotalStake
+    BY SlowIntersectionStakeBound
+  <1>2. SumStake(Q1 \cap Q2) <= SumStake(BSet)
+    BY SumStakeMonotone
+  <1>3. SumStake(BSet) \in Nat /\ SumStake(Q1 \cap Q2) \in Nat
+    BY SumStakeNat
+  <1>4. 2 * SlowThreshold - TotalStake \in Nat
+    BY ThresholdBounds
+  <1>5. SumStake(BSet) >= 2 * SlowThreshold - TotalStake
+    BY <1>1, <1>2, <1>3, <1>4, UpperLowerTrans
+  <1>6. QED BY <1>5
 
 (* Proof complete *)
 ====

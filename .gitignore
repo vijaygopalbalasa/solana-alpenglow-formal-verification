@@ -23,6 +23,12 @@ MC.cfg
 *.obl
 *.sum
 
+# Proof caches and logs (not committed)
+proofs/.tlacache/
+.tlacache/
+verification_logs/
+.claude/
+
 # IDE files
 .vscode/
 .idea/

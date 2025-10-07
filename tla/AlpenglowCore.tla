@@ -16,6 +16,9 @@ CONSTANTS
 StakeVector ==
     CASE StakeProfileId = "equal4" -> <<25, 25, 25, 25>>
          [] StakeProfileId = "byz5" -> <<25, 20, 20, 20, 15>>
+         [] StakeProfileId = "custom6" -> <<20, 20, 20, 20, 10, 10>>
+         [] StakeProfileId = "custom8" -> <<15, 15, 15, 15, 12, 10, 10, 8>>
+         [] StakeProfileId = "custom10" -> <<12, 12, 11, 11, 10, 10, 10, 9, 8, 7>>
          [] OTHER -> <<25, 25, 25, 25>>
 
 Validators == 1..Len(StakeVector)

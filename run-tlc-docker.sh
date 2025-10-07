@@ -1,14 +1,15 @@
-#!/bin/bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 IMAGE_NAME=solana-alpenglow-verifier
 PLATFORM=${PLATFORM:-linux/amd64}
 IMAGE_TAG=${PLATFORM##*/}
+MODE=${1:-quick}
 
 echo "========================================="
-echo "Solana Alpenglow TLAPS Docker Verification"
-echo "Building $PLATFORM image with TLAPS from source"
-echo "Platform: $PLATFORM"
+echo "Solana Alpenglow TLC Docker Verification"
+echo "Building $PLATFORM image"
+echo "Mode: $MODE"
 echo "========================================="
 echo ""
 
@@ -22,30 +23,26 @@ if ! docker info >/dev/null 2>&1; then
   exit 1
 fi
 
-echo "Building Docker image (this will take 10-15 minutes due to TLAPS compilation from source)..."
+mkdir -p verification_logs/tlc_results
+
+echo "Building Docker image (TLC-only, fast build)..."
 docker build --platform=$PLATFORM \
   --build-arg TARGETARCH=${PLATFORM##*/} \
-  -f Dockerfile.arm64 -t $IMAGE_NAME:$IMAGE_TAG .
+  -f Dockerfile.tlc -t ${IMAGE_NAME}:tlc-${IMAGE_TAG} .
 
 echo ""
 echo "Docker image built successfully!"
 echo ""
-echo "Running verification in Docker container..."
+echo "Running TLC in Docker container..."
 echo ""
 
-mkdir -p verification_logs
-
 docker run --rm --platform=$PLATFORM \
-  -v "$(pwd)/proofs/.tlacache:/workspace/proofs/.tlacache" \
+  -e MODE="$MODE" \
   -v "$(pwd)/verification_logs:/workspace/verification_logs" \
-  $IMAGE_NAME:$IMAGE_TAG
+  ${IMAGE_NAME}:tlc-${IMAGE_TAG} "$MODE"
 
 echo ""
 echo "========================================="
-echo "Verification complete!"
-echo "Results saved to:"
-echo "  - verification_logs/tlaps_quorum_docker.log"
-echo "  - verification_logs/tlaps_cert_docker.log"
-echo "  - verification_logs/tlaps_final_docker.log"
-echo "  - proofs/.tlacache/ (proof certificates)"
+echo "TLC verification complete!"
+echo "Results saved to: verification_logs/tlc_results/"
 echo "========================================="

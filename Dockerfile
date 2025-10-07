@@ -1,47 +1,63 @@
 FROM ubuntu:24.04
 
-# Install dependencies
+# Install build/runtime dependencies
 RUN apt-get update && apt-get install -y \
+    build-essential \
+    m4 \
+    libgmp-dev \
+    pkg-config \
+    opam \
+    git \
     wget \
-    tar \
-    openjdk-21-jdk \
     curl \
+    unzip \
+    openjdk-21-jdk \
     && rm -rf /var/lib/apt/lists/*
 
-# Set JAVA_HOME
 ENV JAVA_HOME=/usr/lib/jvm/java-21-openjdk-amd64
 ENV PATH="$JAVA_HOME/bin:$PATH"
 
-# Download and install TLAPS 1.6.0-pre
-RUN wget https://github.com/tlaplus/tlapm/releases/download/1.6.0-pre/tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz && \
-    tar -xzf tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz && \
-    mv tlapm /usr/local/tlapm && \
-    rm tlapm-1.6.0-pre-x86_64-linux-gnu.tar.gz
+# Bootstrap OCaml environment for TLAPS build
+RUN opam init -y --disable-sandboxing && \
+    opam switch create tlapm 4.14.1 && \
+    eval "$(opam env --switch=tlapm)" && \
+    opam install -y dune menhir zarith ppx_deriving batteries stdcompat ocamlfind
 
-ENV PATH="/usr/local/tlapm/bin:$PATH"
+# Build TLAPS 1.6.0-pre from source (with Isabelle bundle)
+RUN git clone https://github.com/tlaplus/tlapm.git /tmp/tlapm && \
+    cd /tmp/tlapm && \
+    git checkout 386cb32 && \
+    mkdir -p _build_cache && \
+    cd _build_cache && \
+    wget https://isabelle.in.tum.de/website-Isabelle2025/dist/Isabelle2025_linux.tar.gz && \
+    echo "3d1d66de371823fe31aa8ae66638f73575bac244f00b31aee1dcb62f38147c56  Isabelle2025_linux.tar.gz" | sha256sum -c - && \
+    cd .. && \
+    eval "$(opam env --switch=tlapm)" && \
+    make && \
+    make install && \
+    rm -rf /tmp/tlapm
 
-# Download and install Isabelle 2025
-RUN wget https://www.cl.cam.ac.uk/research/hvg/Isabelle/dist/Isabelle2025_linux.tar.gz && \
-    tar -xzf Isabelle2025_linux.tar.gz && \
-    mv Isabelle2025 /usr/local/Isabelle && \
-    rm Isabelle2025_linux.tar.gz
+ENV TLAPS_HOME=/usr/local/lib/tlapm
+ENV PATH="/usr/local/bin:$TLAPS_HOME/bin:$PATH"
+ENV ISABELLE_HOME=$TLAPS_HOME/Isabelle
 
-ENV ISABELLE_HOME=/usr/local/Isabelle
-ENV PATH="/usr/local/Isabelle/bin:$PATH"
-
-# Set working directory
+# Workdir
 WORKDIR /workspace
-
-# Copy project files
 COPY . /workspace
 
-# Build ArithmeticIsa Isabelle session
-RUN cd /workspace/proofs && isabelle build -d . -b -v ArithmeticIsa
+# Build Isabelle session and TLAPS config
+RUN isabelle build -d proofs -b ArithmeticIsa && \
+    cat > proofs/tlaps-docker.cfg <<'CFG'
+[prover]
+ timeout = 60
 
-# Set environment variables for TLAPS
-ENV TLA_PATH="/workspace/tla:/workspace/proofs"
+[isabelle]
+ enabled = true
+ image = ArithmeticIsa
+CFG
 
-# Default command: run all proofs
-CMD ["sh", "-c", "tlapm -C --stretch 6 -I proofs -I tla proofs/QuorumIntersection.tla 2>&1 | tee verification_logs/tlaps_quorum_docker.log && \
-     tlapm -C --stretch 6 -I proofs -I tla proofs/CertificateUniqueness.tla 2>&1 | tee verification_logs/tlaps_cert_docker.log && \
-     tlapm -C --stretch 6 -I proofs -I tla proofs/FinalizationSafety.tla 2>&1 | tee verification_logs/tlaps_final_docker.log"]
+# Proof runner
+RUN echo '#!/bin/bash\nset -e\n\nexport PATH="$TLAPS_HOME/bin:/usr/local/bin:$PATH"\nexport TLA_PATH="/workspace/tla:/workspace/proofs"\n\nmkdir -p /workspace/verification_logs\n\nfor mod in QuorumIntersection CertificateUniqueness FinalizationSafety; do\n  echo "===== $mod ====="\n  tlapm -C /workspace/proofs/tlaps-docker.cfg \\n        "/workspace/proofs/${mod}.tla" 2>&1 | tee \
+        "/workspace/verification_logs/tlaps_${mod,,}_docker.log"\ndone\n' > /workspace/run-verification.sh && chmod +x /workspace/run-verification.sh
+
+CMD ["/workspace/run-verification.sh"]

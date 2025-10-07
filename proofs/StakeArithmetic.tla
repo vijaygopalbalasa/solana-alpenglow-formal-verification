@@ -149,6 +149,15 @@ LEMMA LowerBoundTrans ==
     PROVE a < c
 PROOF OBVIOUS
 
-====
+\* Extra integer-division margins used by quorum uniqueness proofs
 
+LEMMA FastMarginStrict ==
+    ASSUME NEW total \in Nat
+    PROVE 2 * ((total * 8) \div 10) - total > (total * 2) \div 10
+PROOF OBVIOUS
+
+LEMMA SlowMarginGe ==
+    ASSUME NEW total \in Nat
+    PROVE 2 * ((total * 6) \div 10) - total >= (total * 2) \div 10
+PROOF OBVIOUS
 ====
