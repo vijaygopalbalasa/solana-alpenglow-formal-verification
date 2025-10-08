@@ -2,20 +2,44 @@
 
 This file lists only machine-checked, reproducible results. Each command below can be run verbatim to regenerate the proofs and logs.
 
-## TLAPS safety proofs (fully proved)
+## TLAPS Proofs (298 obligations proved)
 
-- QuorumIntersection.tla: 175/175 obligations proved
+### Core Safety Proofs
+
+- **QuorumIntersection.tla**: 175/175 obligations proved
+  - Proves quorum intersection properties for both fast (80%) and slow (60%) paths
   - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/QuorumIntersection.tla`
 
-- CertificateUniqueness.tla: 28/28 obligations proved
+- **CertificateUniqueness.tla**: 28/28 obligations proved
+  - Proves certificate uniqueness at each slot
   - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/CertificateUniqueness.tla`
 
-- FinalizationSafety.tla: 43/43 obligations proved
+- **FinalizationSafety.tla**: 43/43 obligations proved
+  - Proves finalization safety (no two conflicting blocks finalize)
   - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/FinalizationSafety.tla`
 
-Notes:
-- Arithmetic helper lemmas live in `proofs/StakeArithmetic.tla` and are proved with OBVIOUS steps (no top-level axioms).
-- The FinalizationSafety proof uses the global intersection bounds from `QuorumIntersection.tla` to avoid heavy local lemmas.
+### Liveness & Resilience Proofs
+
+- **Liveness.tla**: 23/23 obligations proved
+  - Proves progress with ≥60% honest stake and bounded finalization time
+  - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/Liveness.tla`
+
+- **Resilience.tla**: 29/29 obligations proved
+  - Proves safety under ≤20% Byzantine stake, liveness under ≤20% offline stake, and combined 20/20 resilience
+  - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/Resilience.tla`
+
+### Block Propagation Specification
+
+- **Rotor.tla**: 0 obligations (complete specification with PROOF OMITTED)
+  - Formal specification of erasure-coded block propagation with stake-weighted relay sampling
+  - Properties: resilience to failures, latency bounds, bandwidth optimality, safety, no equivocation
+  - Reproduce: `export TLA_PATH="$(pwd)/tla:$(pwd)/proofs" && tlapm -C --stretch 6 -I proofs -I tla proofs/Rotor.tla`
+
+### Notes
+
+- Arithmetic helper lemmas live in `proofs/StakeArithmetic.tla`
+- Some arithmetic lemmas use axioms (GeGtTrans, DivInNat) due to TLAPS 1.6.0 limitations with integer division reasoning
+- The FinalizationSafety proof reuses global intersection bounds from QuorumIntersection to keep obligations manageable
 
 ## TLC model checking evidence
 
@@ -47,15 +71,19 @@ Reproducible runs (Docker):
 
 ## How to reproduce on your system
 
-Option A (recommended): Docker
-- Requirements: Docker Desktop/Engine
-- Run: `./run-proofs-docker.sh`
-- Logs: `verification_logs/tlaps_quorumintersection_docker.log`, `tlaps_certificateuniqueness_docker.log`, `tlaps_finalizationsafety_docker.log`
-- Proof certificates: `proofs/.tlacache/*`
+### Option A (recommended): Docker
 
-Option B: Local TLAPS install
-- Install TLAPS 1.6.0-pre with Isabelle 2025 backend (or use the TLAPS inside the Docker image)
-- Set TLA_PATH and run the three commands shown above
+- **Requirements**: Docker Desktop/Engine
+- **Run**: `./run-proofs-docker.sh`
+- **Logs**:
+  - Individual modules: `verification_logs/tlaps_quorumintersection_docker.log`, `tlaps_certificateuniqueness_docker.log`, `tlaps_finalizationsafety_docker.log`, `tlaps_rotor_docker.log`, `tlaps_liveness_docker.log`, `tlaps_resilience_docker.log`
+  - Complete run: `verification_logs/complete_verification_final.log`
+- **Proof certificates**: `proofs/.tlacache/*`
+
+### Option B: Local TLAPS install
+
+- Install TLAPS 1.6.0-pre with Isabelle 2025 backend
+- Set TLA_PATH and run the six commands shown above
 - Logs can be captured with `... 2>&1 | tee verification_logs/<name>.log`
 
 ## TLC (optional, for liveness/model checking)

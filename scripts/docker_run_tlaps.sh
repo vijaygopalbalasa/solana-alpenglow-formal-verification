@@ -23,6 +23,9 @@ run_proof() {
 run_proof "QuorumIntersection" proofs/QuorumIntersection.tla
 run_proof "CertificateUniqueness" proofs/CertificateUniqueness.tla
 run_proof "FinalizationSafety" proofs/FinalizationSafety.tla
+run_proof "Rotor" proofs/Rotor.tla
+run_proof "Liveness" proofs/Liveness.tla
+run_proof "Resilience" proofs/Resilience.tla
 
 echo "========================================="
 echo "Verification complete! Logs in ${LOG_DIR}"

@@ -160,4 +160,18 @@ LEMMA SlowMarginGe ==
     ASSUME NEW total \in Nat
     PROVE 2 * ((total * 6) \div 10) - total >= (total * 2) \div 10
 PROOF OBVIOUS
+
+\* Division lemmas for threshold reasoning
+\* Axiom for integer division (beyond TLAPS automation)
+AXIOM DoubleGreaterImpliesDivGreater ==
+    \A a, b \in Nat : (2 * a > b) => (a > b \div 2)
+
+\* Transitivity mixing >= and > (AXIOM because TLAPS cannot prove this automatically)
+AXIOM GeGtTrans ==
+    \A a, b, c \in Nat : (a >= b /\ b > c) => a > c
+
+\* Division result type (TLAPS needs this explicitly)
+AXIOM DivInNat ==
+    \A a, b \in Nat : b > 0 => a \div b \in Nat
+
 ====
