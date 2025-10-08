@@ -60,6 +60,16 @@ tlapm -C --stretch 6 -I proofs -I tla proofs/QuorumIntersection.tla \
 
 Configs under `configs/` support small-node model checking for sanity/liveness exploration with standard TLA+ tools. TLC is not required to reproduce the safety proofs above.
 
+### Quick TLC smoke tests (wrappers)
+
+Run invariants-only, one-state smoke checks for 4/6/8/10 validators via wrapper modules:
+
+```bash
+./run-tlc-docker.sh wrappers
+```
+
+This invokes `tla/MC_Full_{4,6,8,10}val_fast.tla` which instantiate `AlpenglowFull` with `MaxSlot=0` and zero timeouts. Logs are saved to `verification_logs/tlc_results/`.
+
 ## Repository layout
 
 - `tla/` — core TLA+ specs (AlpenglowCore, etc.)

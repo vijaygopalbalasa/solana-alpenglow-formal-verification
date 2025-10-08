@@ -17,6 +17,34 @@ Notes:
 - Arithmetic helper lemmas live in `proofs/StakeArithmetic.tla` and are proved with OBVIOUS steps (no top-level axioms).
 - The FinalizationSafety proof uses the global intersection bounds from `QuorumIntersection.tla` to avoid heavy local lemmas.
 
+## TLC model checking evidence
+
+Reproducible runs (Docker):
+
+- 4 validators (deep exploration) — no violations
+  - Command: `./run-tlc-docker.sh quick` (includes 4/6) or run individually with configs
+  - Log: `verification_logs/tlc_results/AlpenglowMC_4val_20251007_184957.log` (large state space)
+
+- 6 validators (deep exploration) — no violations
+  - Command: `./run-tlc-docker.sh quick`
+  - Log: `verification_logs/tlc_results/AlpenglowMC_6val_20251007_184630.log`
+
+- 4 validators (fast wrapper) — invariants hold (one-state smoke)
+  - Command: `./run-tlc-docker.sh wrappers`
+  - Log: `verification_logs/tlc_results/MC_Full_4val_fast_*.log`
+
+- 6 validators (fast wrapper) — invariants hold (one-state smoke)
+  - Command: `./run-tlc-docker.sh wrappers`
+  - Log: `verification_logs/tlc_results/MC_Full_6val_fast_*.log`
+
+- 8 validators (fast wrapper) — invariants hold (one-state smoke)
+  - Command: `./run-tlc-docker.sh wrappers`
+  - Log: `verification_logs/tlc_results/MC_Full_8val_fast_*.log`
+
+- 10 validators (fast wrapper) — invariants hold (one-state smoke)
+  - Command: `./run-tlc-docker.sh wrappers`
+  - Log: `verification_logs/tlc_results/MC_Full_10val_fast_*.log`
+
 ## How to reproduce on your system
 
 Option A (recommended): Docker
