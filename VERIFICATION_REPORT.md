@@ -433,4 +433,4 @@ All results are reproducible via Docker in ~15-20 minutes. No hand-waving, no pa
 
 ---
 
-**For questions or verification issues, see:** `VERIFICATION_RESULTS.md` and `VIDEO_SCRIPT.md`
+**For questions or verification issues, see:** `VERIFICATION_RESULTS.md`
