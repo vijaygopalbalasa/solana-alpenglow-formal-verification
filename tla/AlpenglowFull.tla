@@ -103,11 +103,10 @@ SumStake(V) == LET StakeSum[S \in SUBSET Validators] ==
                        IN Stake[v] + StakeSum[S \ {v}]
                IN StakeSum[V]
 
-Leader(slot) == CHOOSE v \in Validators :
-                  (slot % Cardinality(Validators)) =
-                  (CHOOSE i \in 1..Cardinality(Validators) :
-                    v = (CHOOSE w \in Validators :
-                          Cardinality({x \in Validators : x < w}) = i-1))
+\* Deterministic round-robin leader: the element with exactly (slot mod N) smaller elements
+Leader(slot) == CHOOSE w \in Validators :
+                  Cardinality({x \in Validators : x < w}) =
+                  (slot % Cardinality(Validators))
 
 IsHonest(v) == validatorState[v] = "honest"
 
@@ -303,8 +302,8 @@ AdvanceTime ==
 
 (* Simplified erasure coding - full implementation would use Reed-Solomon *)
 EncodeBlockToShreds(b) ==
-    /\ LET numShreds == 10  (* Simplified - should be γ + Γ *)
-       IN {[block |-> b, shredId |-> i] : i \in 1..numShreds}
+    LET numShreds == 10  (* Simplified - should be γ + Γ *)
+    IN {[block |-> b, shredId |-> i] : i \in 1..numShreds}
 
 SendShreds ==
     /\ \E b \in blocks :

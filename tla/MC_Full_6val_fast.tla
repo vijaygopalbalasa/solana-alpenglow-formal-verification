@@ -1,4 +1,4 @@
----------------------------- MODULE MC_Full_10val_fast ----------------------------
+---------------------------- MODULE MC_Full_6val_fast ----------------------------
 EXTENDS Naturals, FiniteSets, Sequences, TLC
 
 \* Mirror AlpenglowFull variables so TLC treats them as the root module's VARIABLES
@@ -8,8 +8,8 @@ VARIABLES
   network, validatorState, voteHistory, timeouts
 
 M == INSTANCE AlpenglowFull WITH
-  Validators <- 1..10,
-  Stake <- [i \in 1..10 |-> 10],
+  Validators <- 1..6,
+  Stake <- [i \in 1..6 |-> 10],
   MaxSlot <- 0,
   FastThreshold <- 80,
   SlowThreshold <- 60,

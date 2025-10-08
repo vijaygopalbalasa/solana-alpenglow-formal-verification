@@ -40,6 +40,23 @@ run_tlc() {
   echo ""
 }
 
+# Run TLC against a specific TLA module (wrapper) with the common invariants config
+run_tlc_wrapper() {
+  local module="$1"   # e.g., MC_Full_8val_fast
+  local spec_file="/workspace/tla/${module}.tla"
+  local log_file="${LOG_DIR}/${module}_$(date +%Y%m%d_%H%M%S).log"
+  if [ ! -f "$spec_file" ]; then
+    echo "Spec not found: $spec_file" >&2
+    return 1
+  fi
+  echo "=== TLC (wrapper): ${module} ==="
+  java -XX:+UseParallelGC -Xmx8G -Xms2G \
+    -cp /workspace/tools/tla2tools.jar tlc2.TLC \
+    -workers auto -coverage 1 -deadlock -cleanup \
+    "$spec_file" 2>&1 | tee "$log_file"
+  echo ""
+}
+
 case "$MODE" in
   smoke)
     CFGS=("AlpenglowMC_4val_fast")
@@ -52,6 +69,17 @@ case "$MODE" in
     ;;
   large)
     CFGS=("AlpenglowFull_8val_fast" "AlpenglowFull_10val_fast")
+    ;;
+  wrappers)
+    # Use wrapper modules to avoid constant parsing issues for 8/10 validators
+    for m in "MC_Full_4val_fast" "MC_Full_6val_fast" "MC_Full_8val_fast" "MC_Full_10val_fast"; do
+      run_tlc_wrapper "$m" || true
+    done
+    echo "========================================="
+    echo "TLC verification finished (mode=$MODE)"
+    echo "Logs in: $LOG_DIR"
+    echo "========================================="
+    exit 0
     ;;
   *)
     echo "Unknown mode: $MODE" >&2
