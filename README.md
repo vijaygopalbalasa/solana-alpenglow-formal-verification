@@ -114,7 +114,6 @@ This invokes `tla/MC_Full_{4,6,8,10}val_fast.tla` which instantiate `AlpenglowFu
 ├── README.md                     # This file
 ├── VERIFICATION_RESULTS.md      # Detailed results with exact commands
 ├── VERIFICATION_REPORT.md       # Technical report with executive summary
-└── VIDEO_SCRIPT.md              # Step-by-step video walkthrough script
 ```
 
 ## License
